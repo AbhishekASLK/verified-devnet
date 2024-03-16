@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/modules/company/user_profile.dart';
+import 'package:verified_devnet/modules/dev/dev_home.dart';
 
 class CompanyHome extends StatefulWidget {
-  const CompanyHome({super.key});
+  final String loggedCompany;
+  const CompanyHome({
+    required this.loggedCompany,
+    super.key,
+  });
 
   @override
   State<CompanyHome> createState() => _CompanyHomeState();
 }
 
 class _CompanyHomeState extends State<CompanyHome> {
+  List verifiedProjects = projectCardList;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +109,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                     height: 20,
                   );
                 },
-                itemCount: 50,
+                itemCount: verifiedProjects.length,
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: const BoxDecoration(
@@ -134,7 +140,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                 children: [
                                   // ========= Project Name ============
                                   Text(
-                                    'Temporal-Dev',
+                                    verifiedProjects[index].projectName,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
                                       fontSize: 25,
@@ -153,7 +159,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                         ),
                                       ),
                                       Text(
-                                        'AbhishekASLK',
+                                        verifiedProjects[index].developerName,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -173,7 +179,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                         ),
                                       ),
                                       Text(
-                                        '2 Weeks',
+                                        verifiedProjects[index].timeRequired,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -193,7 +199,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                         ),
                                       ),
                                       Text(
-                                        'https://github.com...',
+                                        verifiedProjects[index].gitLink,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -213,7 +219,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                         ),
                                       ),
                                       Text(
-                                        'TKinter',
+                                        verifiedProjects[index].techStack,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -232,7 +238,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                         ),
                                       ),
                                       Text(
-                                        'Individual',
+                                        verifiedProjects[index].type,
                                         style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 14,

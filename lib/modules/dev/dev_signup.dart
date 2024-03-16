@@ -97,14 +97,15 @@ class _DevSignUpState extends State<DevSignUp> {
                       Container(
                         margin: const EdgeInsets.only(top: 10),
                         decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(54, 36, 73, 1),
-                                  Color.fromRGBO(33, 17, 52, 1)
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.5, 0.8])),
+                          gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(54, 36, 73, 1),
+                                Color.fromRGBO(33, 17, 52, 1)
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: [0.5, 0.8]),
+                        ),
                         child: TextFormField(
                           controller: _emailController,
                           style: const TextStyle(color: Colors.white),
@@ -147,53 +148,63 @@ class _DevSignUpState extends State<DevSignUp> {
                           controller: _userController,
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.person_2_outlined,
-                                color: Color.fromRGBO(164, 164, 164, 1),
+                            prefixIcon: Icon(
+                              Icons.person_2_outlined,
+                              color: Color.fromRGBO(164, 164, 164, 1),
+                            ),
+                            hintText: "Username",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(164, 164, 164, 1)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                              hintText: "Username",
-                              hintStyle: TextStyle(
-                                  color: Color.fromRGBO(164, 164, 164, 1)),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)))),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text("Password",
-                          style: TextStyle(
-                              color: Color.fromRGBO(164, 164, 164, 1))),
+                      const Text(
+                        "Password",
+                        style: TextStyle(
+                          color: Color.fromRGBO(164, 164, 164, 1),
+                        ),
+                      ),
                       Container(
                         margin: const EdgeInsets.only(top: 10),
                         decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(54, 36, 73, 1),
-                                  Color.fromRGBO(33, 17, 52, 1)
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.5, 0.8])),
+                          gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(54, 36, 73, 1),
+                                Color.fromRGBO(33, 17, 52, 1)
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: [0.5, 0.8]),
+                        ),
                         child: TextFormField(
                           controller: _passwordController,
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.key,
-                                color: Color.fromRGBO(164, 164, 164, 1),
+                            prefixIcon: Icon(
+                              Icons.key,
+                              color: Color.fromRGBO(164, 164, 164, 1),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.remove_red_eye_rounded,
+                              color: Color.fromRGBO(164, 164, 164, 1),
+                            ),
+                            hintText: "Password",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(164, 164, 164, 1)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                              suffixIcon: Icon(
-                                Icons.remove_red_eye_rounded,
-                                color: Color.fromRGBO(164, 164, 164, 1),
-                              ),
-                              hintText: "Password",
-                              hintStyle: TextStyle(
-                                  color: Color.fromRGBO(164, 164, 164, 1)),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)))),
+                            ),
+                          ),
                         ),
                       ),
                       Row(
@@ -234,9 +245,7 @@ class _DevSignUpState extends State<DevSignUp> {
                       username: _userController.text,
                       password: _passwordController.text,
                     );
-                    print(obj.toMap());
                     await insertDeveloper(obj);
-                    print(await getDeveloperLoginInfo());
                     SnackBar snackBar = const SnackBar(
                       backgroundColor: Colors.green,
                       content: Text('Successfully Signed Up'),
@@ -257,15 +266,17 @@ class _DevSignUpState extends State<DevSignUp> {
                     width: 314,
                     height: 50,
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(156, 63, 228, 1),
-                              Color.fromRGBO(198, 86, 71, 1)
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: [0.1, 0.9])),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(156, 63, 228, 1),
+                          Color.fromRGBO(198, 86, 71, 1)
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        stops: [0.1, 0.9],
+                      ),
+                    ),
                     child: const Center(
                       child: Text(
                         "Sign Up",

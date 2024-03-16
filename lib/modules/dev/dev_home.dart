@@ -3,52 +3,62 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:verified_devnet/main.dart';
-import 'package:verified_devnet/modules/dev/dev_signin.dart';
 
 class ProjectCard {
+  int? projectId;
   String developerName;
   String projectName;
   String timeRequired;
   String gitLink;
   String techStack;
   String type;
+  String status;
 
   ProjectCard({
+    this.projectId,
     required this.developerName,
     required this.projectName,
     required this.timeRequired,
     required this.gitLink,
     required this.techStack,
     required this.type,
+    this.status = 'Unverified',
   });
 
-  Map<String, String> toMap() {
+  Map<String, dynamic> toMap() {
     return {
+      'projectId': projectId,
       'developerName': developerName,
       'projectName': projectName,
       'timeRequired': timeRequired,
       'gitLink': gitLink,
       'techStack': techStack,
       'type': type,
+      'status': status,
     };
   }
 }
 
 class DevHome extends StatefulWidget {
-  const DevHome({super.key});
+  final String loggedUser;
+  const DevHome({
+    required this.loggedUser,
+    super.key,
+  });
 
   @override
   State<DevHome> createState() => _DevHomeState();
 }
 
 String _type = 'Individual';
+List projectCardList = [];
 
 class _DevHomeState extends State<DevHome> {
   final TextEditingController _projectNameController = TextEditingController();
   final TextEditingController _timeRequiredController = TextEditingController();
   final TextEditingController _gitLinkController = TextEditingController();
   final TextEditingController _techStackController = TextEditingController();
-  List projectCardList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +71,7 @@ class _DevHomeState extends State<DevHome> {
           ),
         ),
         title: Text(
-          'abhishekaslk',
+          widget.loggedUser,
           style: GoogleFonts.poppins(
             color: const Color.fromRGBO(235, 235, 244, 0.8),
             fontSize: 16,
@@ -273,7 +283,7 @@ class _DevHomeState extends State<DevHome> {
                                       ),
                                     ),
                                     Text(
-                                      'Individual',
+                                      projectCardList[index].type,
                                       style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 14,
@@ -299,6 +309,7 @@ class _DevHomeState extends State<DevHome> {
         shape: const CircleBorder(),
         backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
         onPressed: () {
+          setState(() {});
           myBottomSheet();
         },
         child: const Icon(
@@ -514,19 +525,18 @@ class _DevHomeState extends State<DevHome> {
                               alignment: Alignment.center,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  List<Map<String, dynamic>> users =
-                                      await getDeveloperLoginInfo();
                                   ProjectCard obj = ProjectCard(
-                                    developerName: users[currentUserIndex]
-                                        ['username'],
+                                    developerName: widget.loggedUser,
                                     projectName: _projectNameController.text,
                                     timeRequired: _timeRequiredController.text,
                                     gitLink: _gitLinkController.text,
                                     techStack: _techStackController.text,
                                     type: _type,
                                   );
-                                  setState(() {});
+
                                   await insertProjectCard(obj);
+                                  setState(() {});
+                                  print(projectCardList[0].projectId);
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Submit'),
@@ -557,25 +567,26 @@ class _DevHomeState extends State<DevHome> {
     );
     projectCardList = await getProjectCards();
   }
+}
 
-  Future getProjectCards() async {
-    List<Map<String, dynamic>> users = await getDeveloperLoginInfo();
-    List<Map<String, dynamic>> cardsListOfMap =
-        await database.query('projectCartTable');
-    return List.generate(
-      cardsListOfMap.length,
-      (index) {
-        return ProjectCard(
-          developerName: users[currentUserIndex]['username'],
-          projectName: cardsListOfMap[index]['projectName'],
-          timeRequired: cardsListOfMap[index]['timeRequired'],
-          gitLink: cardsListOfMap[index]['gitLink'],
-          techStack: cardsListOfMap[index]['techStack'],
-          type: cardsListOfMap[index]['type'],
-        );
-      },
-    );
-  }
+Future getProjectCards() async {
+  List<Map<String, dynamic>> cardsListOfMap =
+      await database.query('projectCartTable');
+  return List.generate(
+    cardsListOfMap.length,
+    (index) {
+      return ProjectCard(
+        projectId: cardsListOfMap[index]['projectId'],
+        developerName: cardsListOfMap[index]['developerName'],
+        projectName: cardsListOfMap[index]['projectName'],
+        timeRequired: cardsListOfMap[index]['timeRequired'],
+        gitLink: cardsListOfMap[index]['gitLink'],
+        techStack: cardsListOfMap[index]['techStack'],
+        type: cardsListOfMap[index]['type'],
+        status: cardsListOfMap[index]['status'],
+      );
+    },
+  );
 }
 
 class BottomSheetIssue extends StatefulWidget {

@@ -210,7 +210,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         if (flag) {
                           SnackBar snackBar = const SnackBar(
                             backgroundColor: Colors.green,
-                            content: Text('Successfully Signed Up'),
+                            content: Text('Successfully Signed In'),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             snackBar,
@@ -230,14 +230,6 @@ class _AdminLoginState extends State<AdminLogin> {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             snackBar,
-                          );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const AdminHome();
-                              },
-                            ),
                           );
                         }
                       },

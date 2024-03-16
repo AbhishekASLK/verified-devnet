@@ -1,5 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:verified_devnet/main.dart';
 import 'package:verified_devnet/modules/company/clogin.dart';
+
+class CompanyLogin {
+  String email;
+  String username;
+  String password;
+  CompanyLogin({
+    required this.email,
+    required this.username,
+    required this.password,
+  });
+
+  Map<String, String> toMap() {
+    return {
+      'email': email,
+      'username': username,
+      'password': password,
+    };
+  }
+}
 
 class ComRegister extends StatefulWidget {
   const ComRegister({super.key});
@@ -9,8 +30,9 @@ class ComRegister extends StatefulWidget {
 }
 
 class _ComRegisterState extends State<ComRegister> {
-  final TextEditingController _usercontroller = TextEditingController();
-  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +111,7 @@ class _ComRegisterState extends State<ComRegister> {
                                 end: Alignment.centerRight,
                                 stops: [0.5, 0.8])),
                         child: TextFormField(
-                          controller: _usercontroller,
+                          controller: _emailController,
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
                               prefixIcon: Icon(
@@ -124,7 +146,7 @@ class _ComRegisterState extends State<ComRegister> {
                                 end: Alignment.centerRight,
                                 stops: [0.5, 0.8])),
                         child: TextFormField(
-                          controller: _usercontroller,
+                          controller: _userController,
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
                               prefixIcon: Icon(
@@ -157,23 +179,26 @@ class _ComRegisterState extends State<ComRegister> {
                                 end: Alignment.centerRight,
                                 stops: [0.5, 0.8])),
                         child: TextFormField(
-                          controller: _passwordcontroller,
+                          controller: _passwordController,
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.key,
-                                color: Color.fromRGBO(164, 164, 164, 1),
+                            prefixIcon: Icon(
+                              Icons.key,
+                              color: Color.fromRGBO(164, 164, 164, 1),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.remove_red_eye_rounded,
+                              color: Color.fromRGBO(164, 164, 164, 1),
+                            ),
+                            hintText: "Password",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(164, 164, 164, 1)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                              suffixIcon: Icon(
-                                Icons.remove_red_eye_rounded,
-                                color: Color.fromRGBO(164, 164, 164, 1),
-                              ),
-                              hintText: "Password",
-                              hintStyle: TextStyle(
-                                  color: Color.fromRGBO(164, 164, 164, 1)),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)))),
+                            ),
+                          ),
                         ),
                       ),
                       Row(
@@ -187,10 +212,11 @@ class _ComRegisterState extends State<ComRegister> {
                           TextButton(
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ComLogin()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ComLogin(),
+                                  ),
+                                );
                               },
                               child: const Text(
                                 "Sign In",
@@ -204,20 +230,44 @@ class _ComRegisterState extends State<ComRegister> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    CompanyLogin obj = CompanyLogin(
+                      email: _emailController.text,
+                      username: _userController.text,
+                      password: _passwordController.text,
+                    );
+                    await insertCompany(obj);
+                    SnackBar snackBar = const SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text('Successfully Signed Up'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      snackBar,
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ComLogin();
+                        },
+                      ),
+                    );
+                  },
                   child: Container(
                       width: 314,
                       height: 50,
                       decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(156, 63, 228, 1),
-                                Color.fromRGBO(198, 86, 71, 1)
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              stops: [0.1, 0.9])),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(156, 63, 228, 1),
+                            Color.fromRGBO(198, 86, 71, 1)
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          stops: [0.1, 0.9],
+                        ),
+                      ),
                       child: const Center(
                         child: Text(
                           "Sign Up",
@@ -233,6 +283,14 @@ class _ComRegisterState extends State<ComRegister> {
           ),
         ),
       ]),
+    );
+  }
+
+  Future insertCompany(CompanyLogin obj) async {
+    await database.insert(
+      'companyLoginTable',
+      obj.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 }

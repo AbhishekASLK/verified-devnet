@@ -1,17 +1,18 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:verified_devnet/modules/dev/dev_home.dart';
 import 'package:verified_devnet/starter/splashscreen.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 dynamic database;
 List<Map<String, dynamic>> developersCredentialsList = [];
+List<Map<String, dynamic>> companyCredentialsList = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   database = await openDatabase(
-    join(await getDatabasesPath(), 'DevnetDB2.1.db'),
+    join(await getDatabasesPath(), 'DevnetDB39.db'),
     version: 1,
     onCreate: (db, version) {
       // =============== DEVELOPER LOGIN TABLE ==============
@@ -40,13 +41,14 @@ void main() async {
 
       db.execute('''
           CREATE TABLE projectCartTable(
-            projectId  INTEGER PRIMARY KEY AUTOINCREMENT,
+            projectId  INTEGER PRIMARY KEY,
             developerName TEXT,
             projectName TEXT,
             timeRequired TEXT,
             gitLink TEXT,
             techStack TEXT,
-            type TEXT
+            type TEXT,
+            status TEXT
           )
       ''');
       print('projectCardTable created');
@@ -57,11 +59,24 @@ void main() async {
 }
 
 Future getDeveloperLoginInfo() async {
-  print('before query');
-  print(await database.query('devLoginTable'));
   developersCredentialsList = await database.query('devLoginTable');
-  print('after query');
   return developersCredentialsList;
+}
+
+Future getCompanyLoginInfo() async {
+  companyCredentialsList = await database.query('companyLoginTable');
+  return companyCredentialsList;
+}
+
+Future updateFlag(ProjectCard obj) async {
+  final localDB = await database;
+  await localDB.update(
+    'projectCartTable',
+    obj.toMap(),
+    where: 'projectId=?',
+    whereArgs: [obj.projectId],
+  );
+  print('${obj.status}++++++++++');
 }
 
 class MainApp extends StatelessWidget {

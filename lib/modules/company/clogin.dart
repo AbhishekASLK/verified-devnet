@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:verified_devnet/main.dart';
 import 'package:verified_devnet/modules/company/cregister.dart';
+import 'package:verified_devnet/modules/company/company_home.dart';
 
 class ComLogin extends StatefulWidget {
   const ComLogin({super.key});
@@ -11,8 +11,9 @@ class ComLogin extends StatefulWidget {
 }
 
 class _ComLoginState extends State<ComLogin> {
-  final TextEditingController _usercontroller = TextEditingController();
-  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String? loggedCompany;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,19 +94,23 @@ class _ComLoginState extends State<ComLogin> {
                                   stops: [0.5, 0.8]),
                             ),
                             child: TextFormField(
-                              controller: _usercontroller,
+                              controller: _userController,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.account_circle_outlined,
-                                    color: Color.fromRGBO(164, 164, 164, 1),
+                                prefixIcon: Icon(
+                                  Icons.account_circle_outlined,
+                                  color: Color.fromRGBO(164, 164, 164, 1),
+                                ),
+                                hintText: "Username",
+                                hintStyle: TextStyle(
+                                  color: Color.fromRGBO(164, 164, 164, 1),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
                                   ),
-                                  hintText: "Username",
-                                  hintStyle: TextStyle(
-                                      color: Color.fromRGBO(164, 164, 164, 1)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10)))),
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -117,32 +122,37 @@ class _ComLoginState extends State<ComLogin> {
                           Container(
                             margin: const EdgeInsets.only(top: 10),
                             decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(54, 36, 73, 1),
-                                      Color.fromRGBO(33, 17, 52, 1)
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [0.5, 0.8])),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(54, 36, 73, 1),
+                                  Color.fromRGBO(33, 17, 52, 1)
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                stops: [0.5, 0.8],
+                              ),
+                            ),
                             child: TextFormField(
-                              controller: _passwordcontroller,
+                              controller: _passwordController,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.key,
-                                    color: Color.fromRGBO(164, 164, 164, 1),
+                                prefixIcon: Icon(
+                                  Icons.key,
+                                  color: Color.fromRGBO(164, 164, 164, 1),
+                                ),
+                                suffixIcon: Icon(
+                                  Icons.remove_red_eye_rounded,
+                                  color: Color.fromRGBO(164, 164, 164, 1),
+                                ),
+                                hintText: "Password",
+                                hintStyle: TextStyle(
+                                    color: Color.fromRGBO(164, 164, 164, 1)),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
                                   ),
-                                  suffixIcon: Icon(
-                                    Icons.remove_red_eye_rounded,
-                                    color: Color.fromRGBO(164, 164, 164, 1),
-                                  ),
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(
-                                      color: Color.fromRGBO(164, 164, 164, 1)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10)))),
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -179,19 +189,26 @@ class _ComLoginState extends State<ComLogin> {
                         ],
                       ),
                     ),
-                    Container(
+                    GestureDetector(
+                      onTap: () async {
+                        await authenticateCompany();
+                        setState(() {});
+                      },
+                      child: Container(
                         width: 314,
                         height: 50,
                         decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(156, 63, 228, 1),
-                                  Color.fromRGBO(198, 86, 71, 1)
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.1, 0.9])),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromRGBO(156, 63, 228, 1),
+                              Color.fromRGBO(198, 86, 71, 1)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: [0.1, 0.9],
+                          ),
+                        ),
                         child: const Center(
                           child: Text(
                             "Sign In",
@@ -200,7 +217,9 @@ class _ComLoginState extends State<ComLogin> {
                                 color: Colors.white,
                                 fontSize: 18),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -209,5 +228,45 @@ class _ComLoginState extends State<ComLogin> {
         ),
       ]),
     );
+  }
+
+  Future authenticateCompany() async {
+    bool validate = false;
+    List<Map<String, dynamic>> developersCredentials =
+        await getCompanyLoginInfo();
+    developersCredentials.forEach(
+      (element) {
+        if (element['username'] == _userController.text &&
+            element['password'] == _passwordController.text) {
+          validate = true;
+          loggedCompany = _userController.text;
+        }
+      },
+    );
+    if (validate) {
+      SnackBar snackBar = const SnackBar(
+        backgroundColor: Colors.green,
+        content: Text('Successfully Signed In'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        snackBar,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return CompanyHome(loggedCompany: loggedCompany!);
+          },
+        ),
+      );
+    } else {
+      SnackBar snackBar = const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Invalid Credentials'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        snackBar,
+      );
+    }
   }
 }

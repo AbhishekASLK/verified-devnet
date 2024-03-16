@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:verified_devnet/main.dart';
 import 'package:verified_devnet/modules/dev/dev_signup.dart';
-import 'package:verified_devnet/modules/dev/home.dart';
-
-int currentUserIndex = 0;
+import 'package:verified_devnet/modules/dev/dev_home.dart';
 
 class DevSignIn extends StatefulWidget {
   const DevSignIn({super.key});
@@ -15,7 +13,7 @@ class DevSignIn extends StatefulWidget {
 class _DevSignInState extends State<DevSignIn> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  String? loggedUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,17 +192,8 @@ class _DevSignInState extends State<DevSignIn> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (await authenticateDeveloper()) {
-                        print(await authenticateDeveloper());
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const DevHome();
-                            },
-                          ),
-                        );
-                      }
+                      await authenticateDeveloper();
+                      setState(() {});
                     },
                     child: Container(
                       width: 314,
@@ -241,20 +230,18 @@ class _DevSignInState extends State<DevSignIn> {
     );
   }
 
-  Future<bool> authenticateDeveloper() async {
+  Future authenticateDeveloper() async {
     bool validate = false;
     List<Map<String, dynamic>> developersCredentials =
         await getDeveloperLoginInfo();
     print(developersCredentials);
-    int i = 0;
     developersCredentials.forEach(
       (element) {
         if (element['username'] == _userController.text &&
             element['password'] == _passwordController.text) {
           validate = true;
-          currentUserIndex = i;
+          loggedUser = _userController.text;
         }
-        i++;
       },
     );
     if (validate) {
@@ -269,7 +256,7 @@ class _DevSignInState extends State<DevSignIn> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const DevHome();
+            return DevHome(loggedUser: loggedUser!);
           },
         ),
       );
@@ -282,6 +269,5 @@ class _DevSignInState extends State<DevSignIn> {
         snackBar,
       );
     }
-    return validate;
   }
 }
