@@ -1,15 +1,54 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:verified_devnet/main.dart';
+import 'package:verified_devnet/modules/dev/dev_signin.dart';
 
-class Dev extends StatefulWidget {
-  const Dev({super.key});
+class ProjectCard {
+  String developerName;
+  String projectName;
+  String timeRequired;
+  String gitLink;
+  String techStack;
+  String type;
 
-  @override
-  State<Dev> createState() => _DevState();
+  ProjectCard({
+    required this.developerName,
+    required this.projectName,
+    required this.timeRequired,
+    required this.gitLink,
+    required this.techStack,
+    required this.type,
+  });
+
+  Map<String, String> toMap() {
+    return {
+      'developerName': developerName,
+      'projectName': projectName,
+      'timeRequired': timeRequired,
+      'gitLink': gitLink,
+      'techStack': techStack,
+      'type': type,
+    };
+  }
 }
 
-class _DevState extends State<Dev> {
+class DevHome extends StatefulWidget {
+  const DevHome({super.key});
+
+  @override
+  State<DevHome> createState() => _DevHomeState();
+}
+
+String _type = 'Individual';
+
+class _DevHomeState extends State<DevHome> {
+  final TextEditingController _projectNameController = TextEditingController();
+  final TextEditingController _timeRequiredController = TextEditingController();
+  final TextEditingController _gitLinkController = TextEditingController();
+  final TextEditingController _techStackController = TextEditingController();
+  List projectCardList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,9 +142,12 @@ class _DevState extends State<Dev> {
                     height: 20,
                   );
                 },
-                itemCount: 50,
+                itemCount: projectCardList.length,
                 itemBuilder: (context, index) {
                   return Container(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                    ),
                     decoration: const BoxDecoration(
                       color: Color.fromRGBO(156, 44, 243, 1),
                       borderRadius: BorderRadius.all(
@@ -149,7 +191,7 @@ class _DevState extends State<Dev> {
                               children: [
                                 // ========= Project Name ============
                                 Text(
-                                  'Temporal-Dev',
+                                  projectCardList[index].projectName,
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 25,
@@ -172,7 +214,7 @@ class _DevState extends State<Dev> {
                                       ),
                                     ),
                                     Text(
-                                      '2 Weeks',
+                                      projectCardList[index].timeRequired,
                                       style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 14,
@@ -192,7 +234,7 @@ class _DevState extends State<Dev> {
                                       ),
                                     ),
                                     Text(
-                                      'https://github.com...',
+                                      projectCardList[index].gitLink,
                                       style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 14,
@@ -212,7 +254,7 @@ class _DevState extends State<Dev> {
                                       ),
                                     ),
                                     Text(
-                                      'TKinter',
+                                      projectCardList[index].techStack,
                                       style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 14,
@@ -266,7 +308,6 @@ class _DevState extends State<Dev> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        // color: const Color.fromRGBO(82, 170, 94, 1.0),
         color: const Color.fromRGBO(118, 70, 177, 1),
         shape: const CircularNotchedRectangle(),
         child: Row(
@@ -299,170 +340,289 @@ class _DevState extends State<Dev> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return SingleChildScrollView(
-          child: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.5),
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(30.0),
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Add project',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Project Name:',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: _projectNameController,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      30,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Time Required:',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: _timeRequiredController,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      30,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Gitlink:',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: _gitLinkController,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      30,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Tech-Stack:',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: _techStackController,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      30,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'Type:',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const BottomSheetIssue(),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const SizedBox(height: 20),
+                            Align(
+                              alignment: Alignment.center,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  List<Map<String, dynamic>> users =
+                                      await getDeveloperLoginInfo();
+                                  ProjectCard obj = ProjectCard(
+                                    developerName: users[currentUserIndex]
+                                        ['username'],
+                                    projectName: _projectNameController.text,
+                                    timeRequired: _timeRequiredController.text,
+                                    gitLink: _gitLinkController.text,
+                                    techStack: _techStackController.text,
+                                    type: _type,
+                                  );
+                                  setState(() {});
+                                  await insertProjectCard(obj);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Submit'),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 19,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Add project',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Project Name:',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    30,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Time Required:',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    30,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Gitlink:',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    30,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Tech-Stack:',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    30,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.center,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Add'),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 19,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Future insertProjectCard(ProjectCard obj) async {
+    await database.insert(
+      'projectCartTable',
+      obj.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    projectCardList = await getProjectCards();
+  }
+
+  Future getProjectCards() async {
+    List<Map<String, dynamic>> users = await getDeveloperLoginInfo();
+    List<Map<String, dynamic>> cardsListOfMap =
+        await database.query('projectCartTable');
+    return List.generate(
+      cardsListOfMap.length,
+      (index) {
+        return ProjectCard(
+          developerName: users[currentUserIndex]['username'],
+          projectName: cardsListOfMap[index]['projectName'],
+          timeRequired: cardsListOfMap[index]['timeRequired'],
+          gitLink: cardsListOfMap[index]['gitLink'],
+          techStack: cardsListOfMap[index]['techStack'],
+          type: cardsListOfMap[index]['type'],
+        );
+      },
+    );
+  }
+}
+
+class BottomSheetIssue extends StatefulWidget {
+  const BottomSheetIssue({super.key});
+
+  @override
+  State<BottomSheetIssue> createState() => _BottomSheetIssueState();
+}
+
+class _BottomSheetIssueState extends State<BottomSheetIssue> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Radio(
+          value: "Individual",
+          groupValue: _type,
+          onChanged: (value) {
+            setState(() {
+              _type = value!;
+            });
+          },
+        ),
+        Text(
+          'Individual',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+        Radio(
+          value: "Group",
+          groupValue: _type,
+          onChanged: (value) {
+            setState(() {
+              _type = value!;
+            });
+          },
+        ),
+        Text(
+          'Group',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+      ],
     );
   }
 }

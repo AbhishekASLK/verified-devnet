@@ -131,7 +131,7 @@ class _AskMenuState extends State<AskMenu> {
                                   const Color.fromRGBO(42, 46, 68, 1),
                               fixedSize: const Size.fromWidth(120)),
                           onPressed: () {
-                            Navigator.pushReplacement(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {

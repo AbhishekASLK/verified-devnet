@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:verified_devnet/starter/splashscreen.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 dynamic database;
+List<Map<String, dynamic>> developersCredentialsList = [];
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  database = openDatabase(
-    join(await getDatabasesPath(), 'DevnetDB1.db'),
+  database = await openDatabase(
+    join(await getDatabasesPath(), 'DevnetDB2.1.db'),
     version: 1,
     onCreate: (db, version) {
       // =============== DEVELOPER LOGIN TABLE ==============
@@ -36,12 +40,13 @@ void main() async {
 
       db.execute('''
           CREATE TABLE projectCartTable(
-            projectId  INTEGER PRIMARY KEY,
-            devName TEXT,
+            projectId  INTEGER PRIMARY KEY AUTOINCREMENT,
+            developerName TEXT,
+            projectName TEXT,
             timeRequired TEXT,
-            githubLink TEXT,
+            gitLink TEXT,
             techStack TEXT,
-            type INTEGER
+            type TEXT
           )
       ''');
       print('projectCardTable created');
@@ -49,6 +54,14 @@ void main() async {
   );
 
   runApp(const MainApp());
+}
+
+Future getDeveloperLoginInfo() async {
+  print('before query');
+  print(await database.query('devLoginTable'));
+  developersCredentialsList = await database.query('devLoginTable');
+  print('after query');
+  return developersCredentialsList;
 }
 
 class MainApp extends StatelessWidget {
