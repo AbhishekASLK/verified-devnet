@@ -1,6 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/main.dart';
 import 'package:verified_devnet/modules/admin/home_admin.dart';

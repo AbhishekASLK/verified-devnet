@@ -53,10 +53,8 @@ class _AskMenuState extends State<AskMenu> {
               alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(42, 46, 68, 1)),
-                  onPressed: () {
+                child: GestureDetector(
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -66,10 +64,36 @@ class _AskMenuState extends State<AskMenu> {
                       ),
                     );
                   },
-                  child: Text(
-                    "Admin",
-                    style:
-                        GoogleFonts.poppins(color: Colors.white, fontSize: 20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 15),
+                      height: 40,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 101, 65, 65),
+                        ),
+                        color: const Color.fromARGB(255, 215, 24, 225),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Admin",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.admin_panel_settings,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -96,18 +120,26 @@ class _AskMenuState extends State<AskMenu> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.all(20),
-                  height: 167,
-                  width: 170,
+                  height: 170,
+                  width: 270,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     gradient: LinearGradient(
-                        colors: [
-                          Color.fromRGBO(164, 49, 253, 1),
-                          Color.fromRGBO(58, 73, 249, 1)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.1, 0.5]),
+                      colors: [
+                        Color.fromRGBO(55, 40, 74, 1),
+                        Color.fromRGBO(83, 19, 133, 1)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 5), // changes the position of shadow
+                      ),
+                    ],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -120,9 +152,10 @@ class _AskMenuState extends State<AskMenu> {
                       Text(
                         "Company",
                         style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -138,62 +171,71 @@ class _AskMenuState extends State<AskMenu> {
                         child: Container(
                           padding: const EdgeInsets.only(left: 15),
                           height: 40,
-                          width: 100,
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(42, 46, 68, 1),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          width: 110,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 215, 24, 225),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
                             children: [
                               Text(
-                                "Login",
+                                "Sign in",
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                    fontSize: 18),
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
                               ),
                               const Icon(
-                                Icons.arrow_forward_ios,
+                                Icons.forward_outlined,
                                 color: Colors.white,
                               )
                             ],
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.all(20),
-                  height: 167,
-                  width: 170,
+                  height: 170,
+                  width: 270,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     gradient: LinearGradient(
                       colors: [
-                        Color.fromRGBO(164, 49, 253, 1),
-                        Color.fromRGBO(58, 73, 249, 1)
+                        Color.fromRGBO(55, 40, 74, 1),
+                        Color.fromRGBO(83, 19, 133, 1)
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      stops: [0.1, 0.5],
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 5), // changes the position of shadow
+                      ),
+                    ],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Icon(
-                        Icons.developer_mode,
+                        Icons.developer_mode_rounded,
                         color: Colors.white,
                         size: 40,
                       ),
                       Text(
                         "Developer",
                         style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -209,31 +251,32 @@ class _AskMenuState extends State<AskMenu> {
                         child: Container(
                           padding: const EdgeInsets.only(left: 15),
                           height: 40,
-                          width: 100,
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(42, 46, 68, 1),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          width: 110,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 215, 24, 225),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
                             children: [
                               Text(
-                                "Login",
+                                "Sign in",
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                    fontSize: 18),
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
                               ),
                               const Icon(
-                                Icons.arrow_forward_ios,
+                                Icons.forward_outlined,
                                 color: Colors.white,
                               )
                             ],
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
