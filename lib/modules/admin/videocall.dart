@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/main.dart';
@@ -80,16 +81,7 @@ class _VideocallState extends State<Videocall> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        updateFlagToList(widget.obj!);
-                        setState(() {});
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const AdminHome();
-                            },
-                          ),
-                        );
+                        _showMyDialog();
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
@@ -151,24 +143,29 @@ class _VideocallState extends State<Videocall> {
                 // Circular container 3
                 Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      height: 30,
-                      width: 80,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Color.fromARGB(255, 243, 10, 10)),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Reject",
-                            style: GoogleFonts.poppins(color: Colors.white),
-                          ),
-                          const Icon(
-                            Icons.arrow_outward,
-                            color: Colors.white,
-                          )
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 30,
+                        width: 80,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color.fromARGB(255, 243, 10, 10)),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Reject",
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
+                            const Icon(
+                              Icons.arrow_outward,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -212,5 +209,90 @@ class _VideocallState extends State<Videocall> {
     projectCardList = await getProjectCards();
     setState(() {});
     print(projectCardList[0].status);
+  }
+
+  // ================== CONFIRM Verify ===================
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromRGBO(54, 36, 73, 1),
+          title: Text(
+            'Confirmation',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            'Are you sure?',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Cancel',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      10,
+                    ),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Verify',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                updateFlagToList(widget.obj!);
+                setState(() {});
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const AdminHome();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

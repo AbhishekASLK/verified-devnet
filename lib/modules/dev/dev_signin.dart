@@ -10,6 +10,8 @@ class DevSignIn extends StatefulWidget {
   State<DevSignIn> createState() => _DevSignInState();
 }
 
+String globalLoggedUser = '';
+
 class _DevSignInState extends State<DevSignIn> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -248,6 +250,8 @@ class _DevSignInState extends State<DevSignIn> {
             element['password'] == _passwordController.text) {
           validate = true;
           loggedUser = _userController.text;
+          globalLoggedUser = loggedUser!;
+          setState(() {});
         }
       },
     );

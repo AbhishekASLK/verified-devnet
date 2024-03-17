@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:verified_devnet/main.dart';
+import 'package:verified_devnet/modules/dev/dev_home.dart';
+import 'package:verified_devnet/modules/dev/dev_signin.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -8,9 +13,40 @@ class UserProfile extends StatefulWidget {
   State<UserProfile> createState() => _UserProfileState();
 }
 
+String? userEmail = '';
+
+void getUserEmail() async {
+  List<Map<String, dynamic>> developersCredentialsList =
+      await getDeveloperLoginInfo();
+  for (var element in developersCredentialsList) {
+    print(element['username']);
+    print(globalLoggedUser);
+    if (element['username'] == globalLoggedUser) {
+      print('$globalLoggedUser 0)))))))))))))))');
+      userEmail = element['email'];
+      print(userEmail);
+      // setState(() {});
+    }
+  }
+}
+
 class _UserProfileState extends State<UserProfile> {
+  Future<void> launchEmailApp(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      throw 'Could not launch email app';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('build of userprofile');
+    getUserEmail();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       body: SingleChildScrollView(
@@ -59,7 +95,7 @@ class _UserProfileState extends State<UserProfile> {
               height: 15,
             ),
             Text(
-              '314',
+              '${projectCardList.length}',
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 20,
@@ -80,24 +116,30 @@ class _UserProfileState extends State<UserProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  height: 40,
-                  width: 125,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(36, 39, 96, 1),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        13,
+                GestureDetector(
+                  onTap: () {
+                    String email = userEmail!;
+                    launchEmailApp(email);
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 125,
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(36, 39, 96, 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          13,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Connect',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                    child: Center(
+                      child: Text(
+                        'Connect',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),

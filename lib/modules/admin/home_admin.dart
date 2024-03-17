@@ -174,103 +174,123 @@ class _AdminHomeState extends State<AdminHome> {
                                       height: 5,
                                     ),
                                     // ========= Name ============
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Developer: ',
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text(
-                                          projectCardList[index].developerName,
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 14,
+                                        children: <TextSpan>[
+                                          const TextSpan(
+                                              text: 'Developer: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(
+                                            text: projectCardList[index]
+                                                .developerName,
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                     // ========= Time required ============
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Time required: ',
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text(
-                                          projectCardList[index].timeRequired,
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 14,
+                                        children: <TextSpan>[
+                                          const TextSpan(
+                                              text: 'Duration: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(
+                                            text: projectCardList[index]
+                                                .timeRequired,
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                     // ========= Git repo ============
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Github: ',
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text(
-                                          projectCardList[index].gitLink,
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 14,
+                                        children: <TextSpan>[
+                                          const TextSpan(
+                                              text: 'Github: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(
+                                            text:
+                                                projectCardList[index].gitLink,
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                     // ========= Tech Stack ============
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Tech-Stack: ',
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text(
-                                          projectCardList[index].techStack,
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 14,
+                                        children: <TextSpan>[
+                                          const TextSpan(
+                                              text: 'TechStack: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(
+                                            text: projectCardList[index]
+                                                .techStack,
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Type:  ',
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text(
-                                          projectCardList[index].type,
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 14,
+                                        children: <TextSpan>[
+                                          const TextSpan(
+                                            text: 'Type: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                        ),
-                                      ],
+                                          TextSpan(
+                                            text: projectCardList[index].type,
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 5,
