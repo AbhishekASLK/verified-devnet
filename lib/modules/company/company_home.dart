@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/modules/company/user_profile.dart';
 import 'package:verified_devnet/modules/dev/dev_home.dart';
+import 'package:verified_devnet/starter/askmenu.dart';
 
 class CompanyHome extends StatefulWidget {
   final String loggedCompany;
@@ -14,10 +16,12 @@ class CompanyHome extends StatefulWidget {
   State<CompanyHome> createState() => _CompanyHomeState();
 }
 
+List tempList = [];
+
 class _CompanyHomeState extends State<CompanyHome> {
   List sortCards() {
     List list = [];
-    for (var element in projectCardList) {
+    for (var element in tempList) {
       if (element.status == 'Verified') {
         list.add(element);
       }
@@ -25,31 +29,50 @@ class _CompanyHomeState extends State<CompanyHome> {
     return list;
   }
 
+  void getCards() async {
+    tempList = await getProjectCards();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    getCards();
     List verifiedProjects = sortCards();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
-        leading: ClipOval(
-          child: Image.asset(
-            'assets/images/core2web.png',
-          ),
+        leading: const Row(
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            CircleAvatar(
+              backgroundImage: AssetImage(
+                'assets/images/core2web.png',
+              ),
+              radius: 20,
+            ),
+          ],
         ),
         title: Text(
-          'core2web',
+          widget.loggedCompany,
           style: GoogleFonts.poppins(
             color: const Color.fromRGBO(235, 235, 244, 0.8),
             fontSize: 16,
           ),
         ),
-        actions: const [
-          Icon(
-            Icons.logout,
-            color: Color.fromRGBO(235, 235, 244, 0.8),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              _showMyDialog();
+            },
+            child: const Icon(
+              Icons.logout,
+              color: Color.fromRGBO(235, 235, 244, 0.8),
+            ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
         ],
@@ -129,9 +152,13 @@ class _CompanyHomeState extends State<CompanyHome> {
                           20,
                         ),
                       ),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(152, 83, 206, 1),
+                          Color.fromRGBO(50, 65, 224, 1)
+                        ],
+                      ),
                     ),
-                    width: 350,
-                    height: 200,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -165,8 +192,8 @@ class _CompanyHomeState extends State<CompanyHome> {
                                       const Icon(
                                         Icons.verified_rounded,
                                         size: 25,
-                                        color: Colors.yellow,
-                                      )
+                                        color: Color.fromARGB(255, 14, 255, 22),
+                                      ),
                                     ],
                                   ),
                                   // ========= Name ============
@@ -352,6 +379,90 @@ class _CompanyHomeState extends State<CompanyHome> {
           )
         ],
       ),
+    );
+  }
+
+  // ================== CONFIRM LOGOUT ===================
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromRGBO(54, 36, 73, 1),
+          title: Text(
+            'Confirmation',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            'Are you sure?',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Cancel',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      10,
+                    ),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Log-Out',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {});
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const AskMenu();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

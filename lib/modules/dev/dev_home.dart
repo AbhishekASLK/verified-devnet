@@ -1,6 +1,6 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:verified_devnet/main.dart';
@@ -61,8 +61,14 @@ class _DevHomeState extends State<DevHome> {
   final TextEditingController _gitLinkController = TextEditingController();
   final TextEditingController _techStackController = TextEditingController();
 
+  void devDataFetch() async {
+    projectCardList = await getProjectCards();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    devDataFetch();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       appBar: AppBar(
@@ -82,14 +88,7 @@ class _DevHomeState extends State<DevHome> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const AskMenu();
-                  },
-                ),
-              );
+              _showMyDialog();
             },
             child: const Icon(
               Icons.logout,
@@ -171,17 +170,21 @@ class _DevHomeState extends State<DevHome> {
                   return Container(
                     padding: const EdgeInsets.only(
                       left: 20,
+                      bottom: 20,
                     ),
                     decoration: const BoxDecoration(
-                      color: Color.fromRGBO(156, 44, 243, 1),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(152, 83, 206, 1),
+                          Color.fromRGBO(50, 65, 224, 1)
+                        ],
+                      ),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           20,
                         ),
                       ),
                     ),
-                    width: 350,
-                    height: 200,
                     child: Column(
                       children: [
                         const SizedBox(
@@ -190,15 +193,38 @@ class _DevHomeState extends State<DevHome> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Image.asset(
-                              'assets/icons/edit.png',
-                              height: 30,
-                              width: 30,
+                            Container(
+                              padding: const EdgeInsets.all(3),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: const Icon(
+                                Icons.edit_outlined,
+                                color: Colors.black,
+                                size: 25,
+                              ),
                             ),
-                            Image.asset(
-                              'assets/icons/trash.png',
-                              height: 30,
-                              width: 30,
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                deleteConfirmation(projectCardList[index]);
+                                setState(() {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: const Icon(
+                                  Icons.delete_outline_outlined,
+                                  color: Colors.black,
+                                  size: 25,
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               width: 20,
@@ -210,102 +236,179 @@ class _DevHomeState extends State<DevHome> {
                             const SizedBox(
                               width: 10,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // ========= Project Name ============
-                                Text(
-                                  projectCardList[index].projectName,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w700,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // ========= Project Name ============
+                                  Text(
+                                    projectCardList[index].projectName,
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
 
-                                // ========= Time required ============
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Time required: ',
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                  // ========= Time required ============
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Time required: ',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      projectCardList[index].timeRequired,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 14,
+                                      Text(
+                                        projectCardList[index].timeRequired,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                // ========= Git repo ============
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Github: ',
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                    ],
+                                  ),
+                                  // ========= Git repo ============
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Github: ',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      projectCardList[index].gitLink,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 14,
+                                      Text(
+                                        projectCardList[index].gitLink,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                // ========= Tech Stack ============
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Tech-Stack: ',
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                    ],
+                                  ),
+                                  // ========= Tech Stack ============
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Tech-Stack: ',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      projectCardList[index].techStack,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 14,
+                                      Text(
+                                        projectCardList[index].techStack,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Type:  ',
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Type:  ',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      projectCardList[index].type,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 14,
+                                      Text(
+                                        projectCardList[index].type,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  (projectCardList[index].status == 'Verified')
+                                      ? Container(
+                                          width: 105,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 5,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                20,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                projectCardList[index]
+                                                    .status
+                                                    .toUpperCase(),
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              const Icon(
+                                                Icons.verified_rounded,
+                                                size: 25,
+                                                color: Colors.green,
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 125,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 5,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                20,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                projectCardList[index]
+                                                    .status
+                                                    .toUpperCase(),
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              const Icon(
+                                                Icons.close,
+                                                size: 25,
+                                                color: Colors.red,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -325,6 +428,7 @@ class _DevHomeState extends State<DevHome> {
         onPressed: () {
           setState(() {});
           myBottomSheet();
+          clearController();
         },
         child: const Icon(
           Icons.add,
@@ -357,6 +461,90 @@ class _DevHomeState extends State<DevHome> {
           ],
         ),
       ),
+    );
+  }
+
+  // ================== CONFIRM LOGOUT ===================
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromRGBO(54, 36, 73, 1),
+          title: Text(
+            'Confirmation',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            'Are you sure?',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Cancel',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      10,
+                    ),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Log-Out',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {});
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const AskMenu();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -575,17 +763,113 @@ class _DevHomeState extends State<DevHome> {
 
   Future insertProjectCard(ProjectCard obj) async {
     await database.insert(
-      'projectCartTable',
+      'projectCardTable',
       obj.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     projectCardList = await getProjectCards();
   }
+
+  void deleteProjectCard(ProjectCard obj) async {
+    await database.delete(
+      'projectCardTable',
+      where: 'projectId=?',
+      whereArgs: [obj.projectId],
+    );
+    projectCardList = await getProjectCards();
+    setState(() {});
+  }
+
+  // ================== CONFIRM LOGOUT ===================
+  Future<void> deleteConfirmation(ProjectCard obj) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromRGBO(54, 36, 73, 1),
+          title: Text(
+            'Confirmation',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            'Are you sure?',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Cancel',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      10,
+                    ),
+                  ),
+                ),
+                height: 30,
+                // width: 70,
+                child: Center(
+                  child: Text(
+                    'Delete',
+                    style:
+                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                deleteProjectCard(obj);
+                Navigator.pop(context);
+                setState(() {});
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void clearController() {
+    _projectNameController.clear();
+    _gitLinkController.clear();
+    _timeRequiredController.clear();
+    _techStackController.clear();
+    _type = 'Individual';
+  }
 }
 
 Future getProjectCards() async {
   List<Map<String, dynamic>> cardsListOfMap =
-      await database.query('projectCartTable');
+      await database.query('projectCardTable');
   return List.generate(
     cardsListOfMap.length,
     (index) {

@@ -12,7 +12,7 @@ List<Map<String, dynamic>> companyCredentialsList = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   database = await openDatabase(
-    join(await getDatabasesPath(), 'DevnetDB40.db'),
+    join(await getDatabasesPath(), 'DevnetDB47.db'),
     version: 1,
     onCreate: (db, version) {
       // =============== DEVELOPER LOGIN TABLE ==============
@@ -40,7 +40,7 @@ void main() async {
       // =============== ProjectCard TABLE =================
 
       db.execute('''
-          CREATE TABLE projectCartTable(
+          CREATE TABLE projectCardTable(
             projectId  INTEGER PRIMARY KEY,
             developerName TEXT,
             projectName TEXT,
@@ -71,7 +71,7 @@ Future getCompanyLoginInfo() async {
 Future updateFlag(ProjectCard obj) async {
   final localDB = await database;
   await localDB.update(
-    'projectCartTable',
+    'projectCardTable',
     obj.toMap(),
     where: 'projectId=?',
     whereArgs: [obj.projectId],
