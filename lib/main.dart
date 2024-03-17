@@ -12,7 +12,7 @@ List<Map<String, dynamic>> companyCredentialsList = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   database = await openDatabase(
-    join(await getDatabasesPath(), 'DevnetDB39.db'),
+    join(await getDatabasesPath(), 'DevnetDB40.db'),
     version: 1,
     onCreate: (db, version) {
       // =============== DEVELOPER LOGIN TABLE ==============

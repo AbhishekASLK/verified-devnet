@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:verified_devnet/main.dart';
+import 'package:verified_devnet/starter/askmenu.dart';
 
 class ProjectCard {
   int? projectId;
@@ -77,12 +79,24 @@ class _DevHomeState extends State<DevHome> {
             fontSize: 16,
           ),
         ),
-        actions: const [
-          Icon(
-            Icons.logout,
-            color: Color.fromRGBO(235, 235, 244, 0.8),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const AskMenu();
+                  },
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.logout,
+              color: Color.fromRGBO(235, 235, 244, 0.8),
+            ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
         ],

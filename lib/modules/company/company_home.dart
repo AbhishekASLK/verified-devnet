@@ -15,9 +15,19 @@ class CompanyHome extends StatefulWidget {
 }
 
 class _CompanyHomeState extends State<CompanyHome> {
-  List verifiedProjects = projectCardList;
+  List sortCards() {
+    List list = [];
+    for (var element in projectCardList) {
+      if (element.status == 'Verified') {
+        list.add(element);
+      }
+    }
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
+    List verifiedProjects = sortCards();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       appBar: AppBar(
@@ -139,13 +149,25 @@ class _CompanyHomeState extends State<CompanyHome> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // ========= Project Name ============
-                                  Text(
-                                    verifiedProjects[index].projectName,
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        verifiedProjects[index].projectName,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      const Icon(
+                                        Icons.verified_rounded,
+                                        size: 25,
+                                        color: Colors.yellow,
+                                      )
+                                    ],
                                   ),
                                   // ========= Name ============
                                   Row(
@@ -247,7 +269,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                     ],
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                           const SizedBox(

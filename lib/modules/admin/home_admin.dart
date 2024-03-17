@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/modules/admin/videocall.dart';
 import 'package:verified_devnet/modules/dev/dev_home.dart';
+import 'package:verified_devnet/starter/askmenu.dart';
 
 // Future getProjectCards() async {
 //   List<Map<String, dynamic>> cardsListOfMap =
@@ -61,12 +64,19 @@ class _AdminHomeState extends State<AdminHome> {
             fontSize: 16,
           ),
         ),
-        actions: const [
-          Icon(
-            Icons.logout,
-            color: Color.fromRGBO(235, 235, 244, 0.8),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const AskMenu();
+              }));
+            },
+            child: const Icon(
+              Icons.logout,
+              color: Color.fromRGBO(235, 235, 244, 0.8),
+            ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
         ],
@@ -152,8 +162,6 @@ class _AdminHomeState extends State<AdminHome> {
                         ),
                       ),
                     ),
-                    width: 350,
-                    height: 200,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -290,10 +298,52 @@ class _AdminHomeState extends State<AdminHome> {
                                         child: Center(
                                           child: Row(
                                             children: [
-                                              Text(
-                                                projectCardList[index].status,
-                                                style: GoogleFonts.poppins(
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 5,
+                                                ),
+                                                decoration: const BoxDecoration(
                                                   color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(
+                                                      20,
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      projectCardList[index]
+                                                          .status
+                                                          .toUpperCase(),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    (projectCardList[index]
+                                                                .status ==
+                                                            'Verified')
+                                                        ? const Icon(
+                                                            Icons
+                                                                .verified_rounded,
+                                                            size: 25,
+                                                            color:
+                                                                Colors.yellow,
+                                                          )
+                                                        : const Icon(
+                                                            Icons.close,
+                                                            size: 25,
+                                                            color: Colors.red,
+                                                          ),
+                                                  ],
                                                 ),
                                               ),
                                               const SizedBox(
@@ -337,9 +387,11 @@ class _AdminHomeState extends State<AdminHome> {
                                               child: Row(
                                                 children: [
                                                   Text(
-                                                    'Verify it',
+                                                    'Verify it'.toUpperCase(),
                                                     style: GoogleFonts.poppins(
                                                       color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -361,22 +413,22 @@ class _AdminHomeState extends State<AdminHome> {
                               ),
                             ],
                           ),
-                          Column(
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/abhishek.jpeg',
-                                  width: 100,
-                                  height: 100,
+                          const Expanded(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
+                                CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage:
+                                      AssetImage('assets/images/abhishek.jpeg'),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             width: 10,
@@ -396,5 +448,6 @@ class _AdminHomeState extends State<AdminHome> {
 
   void fetchList() async {
     projectCardList = await getProjectCards();
+    setState(() {});
   }
 }
