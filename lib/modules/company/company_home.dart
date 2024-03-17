@@ -334,7 +334,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return const UserProfile();
+                                          return UserProfile(index: index);
                                         },
                                       ),
                                     );

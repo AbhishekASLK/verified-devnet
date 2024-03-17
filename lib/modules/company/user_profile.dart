@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:verified_devnet/main.dart';
@@ -7,7 +8,8 @@ import 'package:verified_devnet/modules/dev/dev_home.dart';
 import 'package:verified_devnet/modules/dev/dev_signin.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  final int index;
+  const UserProfile({required this.index, super.key});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -40,6 +42,13 @@ class _UserProfileState extends State<UserProfile> {
       await launchUrl(emailUri);
     } else {
       throw 'Could not launch email app';
+    }
+  }
+
+  Future<void> launchGitLink(String gitlink) async {
+    final Uri url = Uri.parse(gitlink);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 
@@ -144,24 +153,31 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 40,
-                  width: 125,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(36, 39, 96, 1),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        13,
+                GestureDetector(
+                  onTap: () async {
+                    List temp = await getProjectCards();
+                    String git = temp[widget.index].gitLink;
+                    launchGitLink(git);
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 125,
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(36, 39, 96, 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          13,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Github',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                    child: Center(
+                      child: Text(
+                        'Github',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
