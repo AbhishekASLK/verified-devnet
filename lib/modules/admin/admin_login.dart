@@ -10,6 +10,7 @@ class AdminLogin extends StatefulWidget {
 }
 
 class _AdminLoginState extends State<AdminLogin> {
+  bool _passwordVisible = false;
   Map<String, String> adminMap = {
     'priyank': '123',
     'abhishekaslk': '314',
@@ -110,7 +111,9 @@ class _AdminLoginState extends State<AdminLogin> {
                                       }
                                     },
                                     controller: _userController,
-                                    style: const TextStyle(color: Colors.white),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
                                     decoration: const InputDecoration(
                                       errorStyle: TextStyle(
                                         color: Colors.white,
@@ -139,10 +142,12 @@ class _AdminLoginState extends State<AdminLogin> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const Text("Password",
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromRGBO(164, 164, 164, 1))),
+                                const Text(
+                                  "Password",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(164, 164, 164, 1),
+                                  ),
+                                ),
                                 Container(
                                   margin: const EdgeInsets.only(top: 10),
                                   decoration: const BoxDecoration(
@@ -156,6 +161,7 @@ class _AdminLoginState extends State<AdminLogin> {
                                         stops: [0.5, 0.8]),
                                   ),
                                   child: TextFormField(
+                                    obscureText: !_passwordVisible,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter valid password';
@@ -164,8 +170,8 @@ class _AdminLoginState extends State<AdminLogin> {
                                       }
                                     },
                                     controller: _passwordController,
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: const InputDecoration(
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
                                       errorStyle: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -178,9 +184,20 @@ class _AdminLoginState extends State<AdminLogin> {
                                         Icons.key,
                                         color: Color.fromRGBO(164, 164, 164, 1),
                                       ),
-                                      suffixIcon: Icon(
-                                        Icons.remove_red_eye_rounded,
-                                        color: Color.fromRGBO(164, 164, 164, 1),
+                                      suffixIcon: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          _passwordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                        ),
                                       ),
                                       hintText: "Password",
                                       hintStyle: TextStyle(
@@ -215,31 +232,31 @@ class _AdminLoginState extends State<AdminLogin> {
                                   }
                                 },
                               );
-                            }
-                            if (flag) {
-                              SnackBar snackBar = const SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('Successfully Signed In'),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                snackBar,
-                              );
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const AdminHome();
-                                  },
-                                ),
-                              );
-                            } else {
-                              SnackBar snackBar = const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text('Invalid credentials'),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                snackBar,
-                              );
+                              if (flag) {
+                                SnackBar snackBar = const SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text('Successfully Signed In'),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  snackBar,
+                                );
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const AdminHome();
+                                    },
+                                  ),
+                                );
+                              } else {
+                                SnackBar snackBar = const SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text('Invalid credentials'),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  snackBar,
+                                );
+                              }
                             }
                           },
                           child: Container(

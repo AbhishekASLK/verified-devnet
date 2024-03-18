@@ -30,6 +30,12 @@ class ComRegister extends StatefulWidget {
 }
 
 class _ComRegisterState extends State<ComRegister> {
+  bool _passwordVisible = false;
+  void initState() {
+    _passwordVisible = false;
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -88,73 +94,108 @@ class _ComRegisterState extends State<ComRegister> {
                       "Welcome Organization!!",
                       style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 15,
-                        bottom: 20,
-                        left: 40,
-                        right: 40,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Email",
-                            style: TextStyle(
-                                color: Color.fromRGBO(164, 164, 164, 1)),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10),
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(54, 36, 73, 1),
-                                  Color.fromRGBO(33, 17, 52, 1)
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                stops: [0.5, 0.8],
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 15,
+                          bottom: 20,
+                          left: 40,
+                          right: 40,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Email",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(164, 164, 164, 1)),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(54, 36, 73, 1),
+                                    Color.fromRGBO(33, 17, 52, 1)
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  stops: [0.5, 0.8],
+                                ),
+                              ),
+                              child: TextFormField(
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter valid email';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: _emailController,
+                                decoration: const InputDecoration(
+                                    errorStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Color.fromRGBO(164, 164, 164, 1),
+                                    ),
+                                    hintText: "Email",
+                                    hintStyle: TextStyle(
+                                        color:
+                                            Color.fromRGBO(164, 164, 164, 1)),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)))),
                               ),
                             ),
-                            child: TextFormField(
-                              controller: _emailController,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Color.fromRGBO(164, 164, 164, 1),
-                                  ),
-                                  hintText: "Email",
-                                  hintStyle: TextStyle(
-                                      color: Color.fromRGBO(164, 164, 164, 1)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10)))),
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            "Username",
-                            style: TextStyle(
-                                color: Color.fromRGBO(164, 164, 164, 1)),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10),
-                            decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(54, 36, 73, 1),
-                                      Color.fromRGBO(33, 17, 52, 1)
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [0.5, 0.8])),
-                            child: TextFormField(
-                              controller: _userController,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                            const Text(
+                              "Username",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(164, 164, 164, 1)),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(54, 36, 73, 1),
+                                        Color.fromRGBO(33, 17, 52, 1)
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      stops: [0.5, 0.8])),
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter valid username';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: _userController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                  errorStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                   prefixIcon: Icon(
                                     Icons.person_2_outlined,
                                     color: Color.fromRGBO(164, 164, 164, 1),
@@ -163,126 +204,166 @@ class _ComRegisterState extends State<ComRegister> {
                                   hintStyle: TextStyle(
                                       color: Color.fromRGBO(164, 164, 164, 1)),
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10)))),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text("Password",
-                              style: TextStyle(
-                                  color: Color.fromRGBO(164, 164, 164, 1))),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10),
-                            decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(54, 36, 73, 1),
-                                      Color.fromRGBO(33, 17, 52, 1)
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [0.5, 0.8])),
-                            child: TextFormField(
-                              controller: _passwordController,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.key,
-                                  color: Color.fromRGBO(164, 164, 164, 1),
-                                ),
-                                suffixIcon: Icon(
-                                  Icons.remove_red_eye_rounded,
-                                  color: Color.fromRGBO(164, 164, 164, 1),
-                                ),
-                                hintText: "Password",
-                                hintStyle: TextStyle(
-                                    color: Color.fromRGBO(164, 164, 164, 1)),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Text(
-                                "Already have account?",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(164, 164, 164, 1)),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              "Password",
+                              style: TextStyle(
+                                color: Color.fromRGBO(164, 164, 164, 1),
                               ),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const ComLogin(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    "Sign In",
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(164, 164, 164, 1),
-                                        fontWeight: FontWeight.w800),
-                                  )),
-                            ],
-                          )
-                        ],
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(54, 36, 73, 1),
+                                    Color.fromRGBO(33, 17, 52, 1)
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  stops: [0.5, 0.8],
+                                ),
+                              ),
+                              child: TextFormField(
+                                obscureText: !_passwordVisible,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter valid password';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: _passwordController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                  errorStyle: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  errorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.key,
+                                    color: Color.fromRGBO(164, 164, 164, 1),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      _passwordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                  ),
+                                  hintText: "Password",
+                                  hintStyle: const TextStyle(
+                                      color: Color.fromRGBO(164, 164, 164, 1)),
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Text(
+                                  "Already have account?",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(164, 164, 164, 1)),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ComLogin(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Sign In",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(164, 164, 164, 1),
+                                          fontWeight: FontWeight.w800),
+                                    )),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     GestureDetector(
                       onTap: () async {
-                        CompanyLogin obj = CompanyLogin(
-                          email: _emailController.text,
-                          username: _userController.text,
-                          password: _passwordController.text,
-                        );
-                        await insertCompany(obj);
-                        SnackBar snackBar = const SnackBar(
-                          backgroundColor: Colors.green,
-                          content: Text('Successfully Signed Up'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          snackBar,
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const ComLogin();
-                            },
-                          ),
-                        );
+                        bool validatFlag = _formKey.currentState!.validate();
+                        if (validatFlag) {
+                          CompanyLogin obj = CompanyLogin(
+                            email: _emailController.text,
+                            username: _userController.text,
+                            password: _passwordController.text,
+                          );
+                          await insertCompany(obj);
+                          SnackBar snackBar = const SnackBar(
+                            backgroundColor: Colors.green,
+                            content: Text('Successfully Signed Up'),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            snackBar,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ComLogin();
+                              },
+                            ),
+                          );
+                        }
                       },
                       child: Container(
-                          width: 314,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(156, 63, 228, 1),
-                                Color.fromRGBO(198, 86, 71, 1)
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              stops: [0.1, 0.9],
-                            ),
+                        width: 314,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromRGBO(156, 63, 228, 1),
+                              Color.fromRGBO(198, 86, 71, 1)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: [0.1, 0.9],
                           ),
-                          child: const Center(
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                  fontSize: 18),
-                            ),
-                          )),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontSize: 18),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

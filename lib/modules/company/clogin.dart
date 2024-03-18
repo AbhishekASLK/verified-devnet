@@ -11,6 +11,9 @@ class ComLogin extends StatefulWidget {
 }
 
 class _ComLoginState extends State<ComLogin> {
+  bool _passwordVisible = false;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? loggedCompany;
@@ -74,131 +77,186 @@ class _ComLoginState extends State<ComLogin> {
                             color: Colors.white,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 40, bottom: 20, left: 40, right: 40),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Username",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(164, 164, 164, 1)),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
+                        Form(
+                          key: _formKey,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 40, bottom: 20, left: 40, right: 40),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Username",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(164, 164, 164, 1)),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromRGBO(54, 36, 73, 1),
+                                          Color.fromRGBO(33, 17, 52, 1)
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        stops: [0.5, 0.8]),
+                                  ),
+                                  child: TextFormField(
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter valid username';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    controller: _userController,
+                                    decoration: const InputDecoration(
+                                      errorStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.account_circle_outlined,
+                                        color: Color.fromRGBO(164, 164, 164, 1),
+                                      ),
+                                      hintText: "Username",
+                                      hintStyle: TextStyle(
+                                        color: Color.fromRGBO(164, 164, 164, 1),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text("Password",
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromRGBO(164, 164, 164, 1))),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
                                       colors: [
                                         Color.fromRGBO(54, 36, 73, 1),
                                         Color.fromRGBO(33, 17, 52, 1)
                                       ],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
-                                      stops: [0.5, 0.8]),
-                                ),
-                                child: TextFormField(
-                                  controller: _userController,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.account_circle_outlined,
-                                      color: Color.fromRGBO(164, 164, 164, 1),
-                                    ),
-                                    hintText: "Username",
-                                    hintStyle: TextStyle(
-                                      color: Color.fromRGBO(164, 164, 164, 1),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
+                                      stops: [0.5, 0.8],
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Text("Password",
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(164, 164, 164, 1))),
-                              Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(54, 36, 73, 1),
-                                      Color.fromRGBO(33, 17, 52, 1)
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [0.5, 0.8],
-                                  ),
-                                ),
-                                child: TextFormField(
-                                  controller: _passwordController,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.key,
-                                      color: Color.fromRGBO(164, 164, 164, 1),
+                                  child: TextFormField(
+                                    obscureText: !_passwordVisible,
+                                    style: const TextStyle(
+                                      color: Colors.white,
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.remove_red_eye_rounded,
-                                      color: Color.fromRGBO(164, 164, 164, 1),
-                                    ),
-                                    hintText: "Password",
-                                    hintStyle: TextStyle(
-                                        color:
-                                            Color.fromRGBO(164, 164, 164, 1)),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  const Text(
-                                    "Don't have an account?",
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromRGBO(164, 164, 164, 1)),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return const ComRegister();
-                                          },
-                                        ),
-                                      );
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter valid password';
+                                      } else {
+                                        return null;
+                                      }
                                     },
-                                    child: const Text(
-                                      "Sign Up",
+                                    controller: _passwordController,
+                                    decoration: InputDecoration(
+                                      errorStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.key,
+                                        color: Color.fromRGBO(164, 164, 164, 1),
+                                      ),
+                                      suffixIcon: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          _passwordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                        ),
+                                      ),
+                                      hintText: "Password",
+                                      hintStyle: TextStyle(
+                                          color:
+                                              Color.fromRGBO(164, 164, 164, 1)),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    const Text(
+                                      "Don't have an account?",
                                       style: TextStyle(
                                           color:
-                                              Color.fromRGBO(164, 164, 164, 1),
-                                          fontWeight: FontWeight.w700),
+                                              Color.fromRGBO(164, 164, 164, 1)),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return const ComRegister();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        "Sign Up",
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                164, 164, 164, 1),
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await authenticateCompany();
+                            bool validatFlag =
+                                _formKey.currentState!.validate();
+                            if (validatFlag) {
+                              await authenticateCompany();
+                            }
+
                             setState(() {});
                           },
                           child: Container(

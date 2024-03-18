@@ -72,8 +72,8 @@ class _AskMenuState extends State<AskMenu> {
                       width: 110,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: const Color.fromARGB(255, 101, 65, 65),
-                        ),
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            width: 2),
                         color: const Color.fromARGB(255, 215, 24, 225),
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -117,14 +117,22 @@ class _AskMenuState extends State<AskMenu> {
                     color: Colors.white,
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.all(20),
-                  height: 170,
-                  width: 270,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    gradient: LinearGradient(
+                  height: 70,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromRGBO(171, 147, 201, 1),
+                        width: 3),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                    gradient: const LinearGradient(
                       colors: [
                         Color.fromRGBO(55, 40, 74, 1),
                         Color.fromRGBO(83, 19, 133, 1)
@@ -132,20 +140,12 @@ class _AskMenuState extends State<AskMenu> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 5), // changes the position of shadow
-                      ),
-                    ],
                   ),
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Icon(
-                        Icons.business_outlined,
+                        Icons.business_rounded,
                         color: Colors.white,
                         size: 40,
                       ),
@@ -173,13 +173,16 @@ class _AskMenuState extends State<AskMenu> {
                           height: 40,
                           width: 110,
                           decoration: BoxDecoration(
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                                width: 2),
                             color: const Color.fromARGB(255, 215, 24, 225),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
                             children: [
                               Text(
-                                "Sign in",
+                                "Sign In",
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
@@ -187,7 +190,7 @@ class _AskMenuState extends State<AskMenu> {
                                 ),
                               ),
                               const Icon(
-                                Icons.forward_outlined,
+                                Icons.arrow_forward_ios,
                                 color: Colors.white,
                               )
                             ],
@@ -200,11 +203,13 @@ class _AskMenuState extends State<AskMenu> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.all(20),
-                  height: 170,
-                  width: 270,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    gradient: LinearGradient(
+                  height: 70,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Color.fromRGBO(171, 147, 201, 1), width: 3),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    gradient: const LinearGradient(
                       colors: [
                         Color.fromRGBO(55, 40, 74, 1),
                         Color.fromRGBO(83, 19, 133, 1)
@@ -212,16 +217,8 @@ class _AskMenuState extends State<AskMenu> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 5), // changes the position of shadow
-                      ),
-                    ],
                   ),
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Icon(
@@ -253,13 +250,16 @@ class _AskMenuState extends State<AskMenu> {
                           height: 40,
                           width: 110,
                           decoration: BoxDecoration(
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                                width: 2),
                             color: const Color.fromARGB(255, 215, 24, 225),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
                             children: [
                               Text(
-                                "Sign in",
+                                "Sign In",
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
@@ -267,7 +267,7 @@ class _AskMenuState extends State<AskMenu> {
                                 ),
                               ),
                               const Icon(
-                                Icons.forward_outlined,
+                                Icons.arrow_forward_ios,
                                 color: Colors.white,
                               )
                             ],

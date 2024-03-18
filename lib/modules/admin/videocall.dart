@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/main.dart';
 import 'package:verified_devnet/modules/admin/home_admin.dart';
@@ -20,96 +21,116 @@ class _VideocallState extends State<Videocall> {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(
-            "assets/images/elon.png",
+          SizedBox(
+            height: double.infinity,
+            child: Image.asset(
+              "assets/images/mark.png",
+              fit: BoxFit.cover,
+            ),
           ),
           Positioned(
             left: 0,
             right: 0,
             top: 0,
-            child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Name Surname",
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "John Doe",
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "20.10",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 60,
+                  ),
+                  // Adjust the spacing between name and image
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            20,
+                          ),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/candidate.png'),
                         ),
                       ),
-                      Text(
-                        "20.10",
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w200,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 60,
-                ),
-                // Adjust the spacing between name and image
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Image.asset(
-                    "assets/images/akshay-sir.png",
-                    // height: 300,
-                    // width: 150,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
             bottom: 20, // Adjust this value according to your needs
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
               children: [
-                // Circular container 1
-                Column(
+                GestureDetector(
+                  onTap: () {
+                    _showMyDialog();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    height: 40,
+                    width: 100,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color.fromARGB(255, 36, 190, 41),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Verify",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.arrow_outward,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        _showMyDialog();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        height: 30,
-                        width: 80,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Color.fromARGB(255, 36, 190, 41),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Verify",
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Icon(
-                              Icons.arrow_outward,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
                     Container(
                       height: 60,
                       width: 60,
@@ -122,65 +143,33 @@ class _VideocallState extends State<Videocall> {
                         color: Colors.white,
                       ),
                     ),
-                  ],
-                ),
-
-                // Circular container 2
-                Container(
-                  margin: const EdgeInsets.only(top: 45),
-                  height: 60,
-                  width: 60,
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.cameraswitch,
-                    color: Colors.white,
-                  ),
-                ),
-
-                // Circular container 3
-                Column(
-                  children: [
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.cameraswitch,
+                        color: Colors.white,
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(5),
-                        height: 30,
-                        width: 80,
+                        height: 60,
+                        width: 60,
                         decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Color.fromARGB(255, 243, 10, 10)),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Reject",
-                              style: GoogleFonts.poppins(color: Colors.white),
-                            ),
-                            const Icon(
-                              Icons.arrow_outward,
-                              color: Colors.white,
-                            )
-                          ],
+                          color: Colors.red,
+                          shape: BoxShape.circle,
                         ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.white,
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
