@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +11,9 @@ import 'package:verified_devnet/modules/dev/dev_signin.dart';
 
 class UserProfile extends StatefulWidget {
   final int index;
-  const UserProfile({required this.index, super.key});
+  final bool isDeveloper;
+  const UserProfile(
+      {required this.isDeveloper, required this.index, super.key});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -33,6 +37,7 @@ void getUserEmail() async {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  TextEditingController _aboutController = TextEditingController();
   Future<void> launchEmailApp(String email) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
@@ -52,23 +57,35 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  String aboutText =
+      "Passionate Frontend and UI Designer dedicated to crafting engaging digital experiences. Expertise in user-centric design, transforming concepts into visually stunning interfaces. Let's connect!";
   @override
   Widget build(BuildContext context) {
     print('build of userprofile');
     getUserEmail();
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        backgroundColor: const Color(0x412266ff),
+      ),
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Stack(
               children: [
-                Image.asset('assets/others/rectangle.png'),
+                Image.asset(
+                  'assets/others/rectangle.png',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
                 Center(
                   child: Column(
                     children: [
                       const SizedBox(
-                        height: 170,
+                        height: 120,
                       ),
                       ClipOval(
                         child: Image.asset(
@@ -86,7 +103,7 @@ class _UserProfileState extends State<UserProfile> {
               height: 10,
             ),
             Text(
-              'AbhishekASLK',
+              globalLoggedUser,
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 20,
@@ -122,68 +139,70 @@ class _UserProfileState extends State<UserProfile> {
             const SizedBox(
               height: 15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    String email = userEmail!;
-                    launchEmailApp(email);
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 125,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(36, 39, 96, 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          13,
+            (!widget.isDeveloper)
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          String email = userEmail!;
+                          launchEmailApp(email);
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 125,
+                          decoration: const BoxDecoration(
+                            color: Color.fromRGBO(36, 39, 96, 1),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                13,
+                              ),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Connect',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Connect',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                      GestureDetector(
+                        onTap: () async {
+                          List temp = await getProjectCards();
+                          String git = temp[widget.index].gitLink;
+                          launchGitLink(git);
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 125,
+                          decoration: const BoxDecoration(
+                            color: Color.fromRGBO(36, 39, 96, 1),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                13,
+                              ),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Github',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    List temp = await getProjectCards();
-                    String git = temp[widget.index].gitLink;
-                    launchGitLink(git);
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 125,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(36, 39, 96, 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          13,
-                        ),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Github',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                    ],
+                  )
+                : const SizedBox(),
             const SizedBox(
               height: 20,
             ),
@@ -199,6 +218,21 @@ class _UserProfileState extends State<UserProfile> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  (!widget.isDeveloper)
+                      ? SizedBox()
+                      : GestureDetector(
+                          onTap: () {
+                            _aboutController.text = aboutText;
+                            aboutBottomSheet();
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        )
                 ],
               ),
             ),
@@ -206,6 +240,7 @@ class _UserProfileState extends State<UserProfile> {
               padding: const EdgeInsets.all(10.0),
               child: SingleChildScrollView(
                 child: Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                     color: Color.fromRGBO(65, 34, 102, 1),
@@ -216,7 +251,7 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   child: Text(
-                    "Passionate Frontend and UI Designer dedicated to crafting engaging digital experiences. Expertise in user-centric design, transforming concepts into visually stunning interfaces. Let's connect!",
+                    aboutText,
                     style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 18,
@@ -228,6 +263,99 @@ class _UserProfileState extends State<UserProfile> {
           ],
         ),
       ),
+    );
+  }
+
+  void aboutBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'About',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      TextField(
+                        maxLines: 6,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                        ),
+                        controller: _aboutController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                aboutText = _aboutController.text;
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    20,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'Submit',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

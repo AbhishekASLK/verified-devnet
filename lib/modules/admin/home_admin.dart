@@ -14,11 +14,30 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  List<ProjectCard> _searchedItems = [];
   @override
   void initState() {
     super.initState();
-    fetchList();
+    fun();
   }
+
+  // void fetchList() async {
+  //   projectCardList = await getProjectCards();
+  //   setState(() {});
+  // }
+
+  void fun() async {
+    _searchedItems = await getProjectCards();
+    projectCardList = _searchedItems;
+    setState(() {});
+    print(_searchedItems);
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchList();
+  // }
 
   List projectCardList = [];
   @override
@@ -67,52 +86,40 @@ class _AdminHomeState extends State<AdminHome> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 47, 27, 71),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      30,
-                    ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: 50,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 47, 27, 71),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    30,
                   ),
                 ),
-                height: 50,
-                width: 150,
-                child: Center(
-                  child: Text(
-                    'All Projects',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+              ),
+              child: Center(
+                child: TextField(
+                  onChanged: (value) {
+                    filter(value);
+                  },
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    hintStyle: GoogleFonts.poppins(
+                      color: Colors.white.withOpacity(0.7),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
               ),
-              Container(
-                height: 50,
-                width: 150,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 47, 27, 71),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      30,
-                    ),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Search',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(
             height: 15,
@@ -280,7 +287,8 @@ class _AdminHomeState extends State<AdminHome> {
                                           const TextSpan(
                                             text: 'Type: ',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                           TextSpan(
                                             text: projectCardList[index].type,
@@ -529,8 +537,23 @@ class _AdminHomeState extends State<AdminHome> {
     );
   }
 
-  void fetchList() async {
-    projectCardList = await getProjectCards();
-    setState(() {});
+  void filter(String searchText) async {
+    List<ProjectCard> results = [];
+    if (searchText.isEmpty) {
+      results = await getProjectCards();
+    } else {
+      for (var element in _searchedItems) {
+        if (element.techStack
+            .toLowerCase()
+            .contains(searchText.toLowerCase())) {
+          results.add(element);
+        }
+      }
+    }
+
+    setState(() {
+      _searchedItems = results;
+      projectCardList = _searchedItems;
+    });
   }
 }

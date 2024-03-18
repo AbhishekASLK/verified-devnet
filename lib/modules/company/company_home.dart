@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/modules/company/user_profile.dart';
 import 'package:verified_devnet/modules/dev/dev_home.dart';
@@ -19,6 +20,21 @@ class CompanyHome extends StatefulWidget {
 List tempList = [];
 
 class _CompanyHomeState extends State<CompanyHome> {
+  List _searchedItems = [];
+  List verifiedProjects = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fun();
+  }
+
+  void fun() {
+    getCards();
+    // setState(() {});
+    print('$_searchedItems *99999');
+  }
+
   List sortCards() {
     List list = [];
     for (var element in tempList) {
@@ -31,13 +47,17 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   void getCards() async {
     tempList = await getProjectCards();
+    print('$tempList 111111');
+    _searchedItems = sortCards();
+    print('$_searchedItems hhhhhhhhh');
     setState(() {});
+    verifiedProjects = _searchedItems;
   }
 
   @override
   Widget build(BuildContext context) {
-    getCards();
-    List verifiedProjects = sortCards();
+    // getCards();
+    // List verifiedProjects = sortCards();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       appBar: AppBar(
@@ -82,52 +102,40 @@ class _CompanyHomeState extends State<CompanyHome> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 47, 27, 71),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      30,
-                    ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: 50,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 47, 27, 71),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    30,
                   ),
                 ),
-                height: 50,
-                width: 150,
-                child: Center(
-                  child: Text(
-                    'All Projects',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+              ),
+              child: Center(
+                child: TextField(
+                  onChanged: (value) {
+                    filter(value);
+                  },
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    hintStyle: GoogleFonts.poppins(
+                      color: Colors.white.withOpacity(0.7),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
               ),
-              Container(
-                height: 50,
-                width: 150,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 47, 27, 71),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      30,
-                    ),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Search',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(
             height: 30,
@@ -161,213 +169,260 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: Column(
                         children: [
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Column(
+                          // ========= Project Name ============
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Expanded(
+                                child: Text(
+                                  verifiedProjects[index].projectName,
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              const Icon(
+                                Icons.verified_rounded,
+                                size: 25,
+                                color: Color.fromARGB(255, 14, 255, 22),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // ========= Name ============
+                                        RichText(
+                                          text: TextSpan(
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                text: 'Developer: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: verifiedProjects[index]
+                                                    .developerName,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        // ========= Time required ============
+                                        RichText(
+                                          text: TextSpan(
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                text: 'Time required: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: verifiedProjects[index]
+                                                    .timeRequired,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // ========= Git repo ============
+                                        RichText(
+                                          text: TextSpan(
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                text: 'Github: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: verifiedProjects[index]
+                                                    .gitLink,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // ========= Tech Stack ============
+                                        RichText(
+                                          text: TextSpan(
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                text: 'TechStack: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: verifiedProjects[index]
+                                                    .techStack,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // ========= Type ============
+                                        RichText(
+                                          text: TextSpan(
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                text: 'Type: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: verifiedProjects[index]
+                                                    .type,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                               const SizedBox(
                                 width: 10,
                               ),
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // ========= Project Name ============
-                                  Row(
-                                    children: [
-                                      Text(
-                                        verifiedProjects[index].projectName,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      const Icon(
-                                        Icons.verified_rounded,
-                                        size: 25,
-                                        color: Color.fromARGB(255, 14, 255, 22),
-                                      ),
-                                    ],
+                                  const SizedBox(
+                                    height: 20,
                                   ),
-                                  // ========= Name ============
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Developer: ',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        verifiedProjects[index].developerName,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
+                                  ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/abhishek.jpeg',
+                                      width: 100,
+                                      height: 100,
+                                    ),
                                   ),
-                                  // ========= Time required ============
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Time required: ',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        verifiedProjects[index].timeRequired,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
+                                  const SizedBox(
+                                    height: 20,
                                   ),
-                                  // ========= Git repo ============
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Github: ',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                  Container(
+                                    // height: 30,
+                                    // width: 100,
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromRGBO(42, 46, 68, 1),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          20,
                                         ),
                                       ),
-                                      Text(
-                                        verifiedProjects[index].gitLink,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 14,
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return UserProfile(
+                                                index: index,
+                                                isDeveloper: false,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 10),
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Connect',
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              const Icon(
+                                                Icons.forward,
+                                                color: Colors.yellow,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  // ========= Tech Stack ============
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Tech-Stack: ',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        verifiedProjects[index].techStack,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Type:  ',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        verifiedProjects[index].type,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  )
                                 ],
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            children: [
                               const SizedBox(
-                                height: 20,
+                                width: 10,
                               ),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/abhishek.jpeg',
-                                  width: 100,
-                                  height: 100,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                // height: 30,
-                                // width: 100,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(42, 46, 68, 1),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      20,
-                                    ),
-                                  ),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return UserProfile(index: index);
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 10),
-                                    child: Center(
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'Connect',
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          const Icon(
-                                            Icons.forward,
-                                            color: Colors.yellow,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
                             ],
-                          ),
-                          const SizedBox(
-                            width: 10,
                           ),
                         ],
                       ),
@@ -464,5 +519,25 @@ class _CompanyHomeState extends State<CompanyHome> {
         );
       },
     );
+  }
+
+  void filter(String searchText) async {
+    List<ProjectCard> results = [];
+    if (searchText.isEmpty) {
+      results = await getProjectCards();
+    } else {
+      for (var element in _searchedItems) {
+        if (element.techStack
+            .toLowerCase()
+            .contains(searchText.toLowerCase())) {
+          results.add(element);
+        }
+      }
+    }
+
+    setState(() {
+      _searchedItems = results;
+      verifiedProjects = _searchedItems;
+    });
   }
 }

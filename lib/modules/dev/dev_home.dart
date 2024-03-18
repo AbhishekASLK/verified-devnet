@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:verified_devnet/main.dart';
+import 'package:verified_devnet/modules/company/user_profile.dart';
 import 'package:verified_devnet/starter/askmenu.dart';
 
 class ProjectCard {
@@ -77,10 +78,10 @@ class _DevHomeState extends State<DevHome> {
   final TextEditingController _gitLinkController = TextEditingController();
   final TextEditingController _techStackController = TextEditingController();
 
-  void devDataFetch() async {
-    projectCardList = await getProjectCards();
-    setState(() {});
-  }
+  // void devDataFetch() async {
+  //   projectCardList = await getProjectCards();
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -476,7 +477,19 @@ class _DevHomeState extends State<DevHome> {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const UserProfile(
+                        index: 0,
+                        isDeveloper: true,
+                      );
+                    },
+                  ),
+                );
+              },
               icon: const Icon(
                 Icons.person,
                 color: Colors.white,
@@ -944,7 +957,9 @@ class _DevHomeState extends State<DevHome> {
       results = await getProjectCards();
     } else {
       for (var element in _searchedItems) {
-        if (element.techStack.contains(searchText)) {
+        if (element.techStack
+            .toLowerCase()
+            .contains(searchText.toLowerCase())) {
           results.add(element);
         }
       }
