@@ -1,8 +1,5 @@
 import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:verified_devnet/main.dart';
@@ -25,19 +22,14 @@ void getUserEmail() async {
   List<Map<String, dynamic>> developersCredentialsList =
       await getDeveloperLoginInfo();
   for (var element in developersCredentialsList) {
-    print(element['username']);
-    print(globalLoggedUser);
     if (element['username'] == globalLoggedUser) {
-      print('$globalLoggedUser 0)))))))))))))))');
       userEmail = element['email'];
-      print(userEmail);
-      // setState(() {});
     }
   }
 }
 
 class _UserProfileState extends State<UserProfile> {
-  TextEditingController _aboutController = TextEditingController();
+  final TextEditingController _aboutController = TextEditingController();
   Future<void> launchEmailApp(String email) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
@@ -61,7 +53,6 @@ class _UserProfileState extends State<UserProfile> {
       "Passionate Frontend and UI Designer dedicated to crafting engaging digital experiences. Expertise in user-centric design, transforming concepts into visually stunning interfaces. Let's connect!";
   @override
   Widget build(BuildContext context) {
-    print('build of userprofile');
     getUserEmail();
     return Scaffold(
       appBar: AppBar(
@@ -222,7 +213,7 @@ class _UserProfileState extends State<UserProfile> {
                     width: 10,
                   ),
                   (!widget.isDeveloper)
-                      ? SizedBox()
+                      ? const SizedBox()
                       : GestureDetector(
                           onTap: () {
                             _aboutController.text = aboutText;
@@ -232,7 +223,7 @@ class _UserProfileState extends State<UserProfile> {
                             Icons.edit,
                             color: Colors.white,
                           ),
-                        )
+                        ),
                 ],
               ),
             ),

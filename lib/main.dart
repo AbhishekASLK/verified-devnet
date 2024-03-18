@@ -12,19 +12,18 @@ List<Map<String, dynamic>> companyCredentialsList = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   database = await openDatabase(
-    join(await getDatabasesPath(), 'DevnetDB57.db'),
+    join(await getDatabasesPath(), 'DevnetDB59.db'),
     version: 1,
     onCreate: (db, version) {
       // =============== DEVELOPER LOGIN TABLE ==============
 
       db.execute('''
           CREATE TABLE devLoginTable(
-            email TEXT,
+            email TEXT,   
             username TEXT PRIMARY KEY,
             password TEXT
           )
       ''');
-      print('devLoginTable created');
 
       // =============== COMPANY LOGIN TABLE =================
 
@@ -35,7 +34,6 @@ void main() async {
             password TEXT
           )
       ''');
-      print('companyLoginTable created');
 
       // =============== ProjectCard TABLE =================
 
@@ -51,7 +49,6 @@ void main() async {
             status TEXT
           )
       ''');
-      print('projectCardTable created');
     },
   );
 
@@ -76,7 +73,6 @@ Future updateFlag(ProjectCard obj) async {
     where: 'projectId=?',
     whereArgs: [obj.projectId],
   );
-  print('${obj.status}++++++++++');
 }
 
 class MainApp extends StatelessWidget {

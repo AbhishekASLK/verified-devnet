@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verified_devnet/main.dart';
-import 'package:verified_devnet/modules/company/cregister.dart';
+import 'package:verified_devnet/modules/company/com_signup.dart';
 import 'package:verified_devnet/modules/company/company_home.dart';
 
 class ComLogin extends StatefulWidget {
@@ -61,7 +61,6 @@ class _ComLoginState extends State<ComLogin> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 150),
                     child: Column(
-                      // mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text(
                           "Hire the Talent!",
@@ -94,13 +93,14 @@ class _ComLoginState extends State<ComLogin> {
                                   margin: const EdgeInsets.only(top: 10),
                                   decoration: const BoxDecoration(
                                     gradient: LinearGradient(
-                                        colors: [
-                                          Color.fromRGBO(54, 36, 73, 1),
-                                          Color.fromRGBO(33, 17, 52, 1)
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        stops: [0.5, 0.8]),
+                                      colors: [
+                                        Color.fromRGBO(54, 36, 73, 1),
+                                        Color.fromRGBO(33, 17, 52, 1)
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      stops: [0.5, 0.8],
+                                    ),
                                   ),
                                   child: TextFormField(
                                     style: const TextStyle(
@@ -142,10 +142,12 @@ class _ComLoginState extends State<ComLogin> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const Text("Password",
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromRGBO(164, 164, 164, 1))),
+                                const Text(
+                                  "Password",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(164, 164, 164, 1),
+                                  ),
+                                ),
                                 Container(
                                   margin: const EdgeInsets.only(top: 10),
                                   decoration: const BoxDecoration(
@@ -173,15 +175,15 @@ class _ComLoginState extends State<ComLogin> {
                                     },
                                     controller: _passwordController,
                                     decoration: InputDecoration(
-                                      errorStyle: TextStyle(
+                                      errorStyle: const TextStyle(
                                         color: Colors.white,
                                       ),
-                                      errorBorder: OutlineInputBorder(
+                                      errorBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                         ),
                                       ),
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.key,
                                         color: Color.fromRGBO(164, 164, 164, 1),
                                       ),
@@ -201,10 +203,10 @@ class _ComLoginState extends State<ComLogin> {
                                         ),
                                       ),
                                       hintText: "Password",
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                           color:
                                               Color.fromRGBO(164, 164, 164, 1)),
-                                      border: OutlineInputBorder(
+                                      border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(10),
                                         ),
@@ -221,8 +223,8 @@ class _ComLoginState extends State<ComLogin> {
                                     const Text(
                                       "Don't have an account?",
                                       style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(164, 164, 164, 1)),
+                                        color: Color.fromRGBO(164, 164, 164, 1),
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -238,9 +240,10 @@ class _ComLoginState extends State<ComLogin> {
                                       child: const Text(
                                         "Sign Up",
                                         style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                164, 164, 164, 1),
-                                            fontWeight: FontWeight.w700),
+                                          color:
+                                              Color.fromRGBO(164, 164, 164, 1),
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -256,15 +259,15 @@ class _ComLoginState extends State<ComLogin> {
                             if (validatFlag) {
                               await authenticateCompany();
                             }
-
                             setState(() {});
                           },
                           child: Container(
                             width: 314,
                             height: 50,
                             decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ),
                               gradient: LinearGradient(
                                 colors: [
                                   Color.fromRGBO(156, 63, 228, 1),
@@ -279,9 +282,10 @@ class _ComLoginState extends State<ComLogin> {
                               child: Text(
                                 "Sign In",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    fontSize: 18),
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                           ),
@@ -302,15 +306,13 @@ class _ComLoginState extends State<ComLogin> {
     bool validate = false;
     List<Map<String, dynamic>> developersCredentials =
         await getCompanyLoginInfo();
-    developersCredentials.forEach(
-      (element) {
-        if (element['username'] == _userController.text &&
-            element['password'] == _passwordController.text) {
-          validate = true;
-          loggedCompany = _userController.text;
-        }
-      },
-    );
+    for (var element in developersCredentials) {
+      if (element['username'] == _userController.text &&
+          element['password'] == _passwordController.text) {
+        validate = true;
+        loggedCompany = _userController.text;
+      }
+    }
     if (validate) {
       SnackBar snackBar = const SnackBar(
         backgroundColor: Colors.green,

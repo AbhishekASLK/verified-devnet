@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/modules/admin/videocall.dart';
 import 'package:verified_devnet/modules/dev/dev_home.dart';
@@ -21,23 +19,11 @@ class _AdminHomeState extends State<AdminHome> {
     fun();
   }
 
-  // void fetchList() async {
-  //   projectCardList = await getProjectCards();
-  //   setState(() {});
-  // }
-
   void fun() async {
     _searchedItems = await getProjectCards();
     projectCardList = _searchedItems;
     setState(() {});
-    print(_searchedItems);
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchList();
-  // }
 
   List projectCardList = [];
   @override
@@ -151,8 +137,11 @@ class _AdminHomeState extends State<AdminHome> {
                       ),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        top: 20,
+                        bottom: 20,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -190,9 +179,11 @@ class _AdminHomeState extends State<AdminHome> {
                                         ),
                                         children: <TextSpan>[
                                           const TextSpan(
-                                              text: 'Developer: ',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                            text: 'Developer: ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           TextSpan(
                                             text: projectCardList[index]
                                                 .developerName,
@@ -214,9 +205,11 @@ class _AdminHomeState extends State<AdminHome> {
                                         ),
                                         children: <TextSpan>[
                                           const TextSpan(
-                                              text: 'Duration: ',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                            text: 'Duration: ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           TextSpan(
                                             text: projectCardList[index]
                                                 .timeRequired,
@@ -238,9 +231,11 @@ class _AdminHomeState extends State<AdminHome> {
                                         ),
                                         children: <TextSpan>[
                                           const TextSpan(
-                                              text: 'Github: ',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                            text: 'Github: ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           TextSpan(
                                             text:
                                                 projectCardList[index].gitLink,
@@ -262,9 +257,11 @@ class _AdminHomeState extends State<AdminHome> {
                                         ),
                                         children: <TextSpan>[
                                           const TextSpan(
-                                              text: 'TechStack: ',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                            text: 'TechStack: ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           TextSpan(
                                             text: projectCardList[index]
                                                 .techStack,
@@ -487,8 +484,10 @@ class _AdminHomeState extends State<AdminHome> {
                 child: Center(
                   child: Text(
                     'Cancel',
-                    style:
-                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -513,8 +512,10 @@ class _AdminHomeState extends State<AdminHome> {
                 child: Center(
                   child: Text(
                     'Log-Out',
-                    style:
-                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),

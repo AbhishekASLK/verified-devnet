@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/modules/company/user_profile.dart';
 import 'package:verified_devnet/modules/dev/dev_home.dart';
@@ -31,8 +29,6 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   void fun() {
     getCards();
-    // setState(() {});
-    print('$_searchedItems *99999');
   }
 
   List sortCards() {
@@ -47,17 +43,13 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   void getCards() async {
     tempList = await getProjectCards();
-    print('$tempList 111111');
     _searchedItems = sortCards();
-    print('$_searchedItems hhhhhhhhh');
     setState(() {});
     verifiedProjects = _searchedItems;
   }
 
   @override
   Widget build(BuildContext context) {
-    // getCards();
-    // List verifiedProjects = sortCards();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(33, 17, 52, 1),
       appBar: AppBar(
@@ -351,8 +343,6 @@ class _CompanyHomeState extends State<CompanyHome> {
                                 width: 10,
                               ),
                               Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const SizedBox(
                                     height: 20,
@@ -368,8 +358,6 @@ class _CompanyHomeState extends State<CompanyHome> {
                                     height: 20,
                                   ),
                                   Container(
-                                    // height: 30,
-                                    // width: 100,
                                     decoration: const BoxDecoration(
                                       color: Color.fromRGBO(42, 46, 68, 1),
                                       borderRadius: BorderRadius.all(
@@ -416,7 +404,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                               const SizedBox(
@@ -431,7 +419,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -467,12 +455,13 @@ class _CompanyHomeState extends State<CompanyHome> {
                   ),
                 ),
                 height: 30,
-                // width: 70,
                 child: Center(
                   child: Text(
                     'Cancel',
-                    style:
-                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -497,8 +486,10 @@ class _CompanyHomeState extends State<CompanyHome> {
                 child: Center(
                   child: Text(
                     'Log-Out',
-                    style:
-                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),

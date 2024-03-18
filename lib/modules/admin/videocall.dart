@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verified_devnet/main.dart';
-import 'package:verified_devnet/modules/admin/home_admin.dart';
+import 'package:verified_devnet/modules/admin/admin_home.dart';
 import 'package:verified_devnet/modules/dev/dev_home.dart';
 
 class Videocall extends StatefulWidget {
@@ -17,7 +15,6 @@ class Videocall extends StatefulWidget {
 class _VideocallState extends State<Videocall> {
   @override
   Widget build(BuildContext context) {
-    print(widget.obj!.projectId);
     return Scaffold(
       body: Stack(
         children: [
@@ -35,7 +32,6 @@ class _VideocallState extends State<Videocall> {
             child: Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Row(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
@@ -67,7 +63,6 @@ class _VideocallState extends State<Videocall> {
                   const SizedBox(
                     width: 60,
                   ),
-                  // Adjust the spacing between name and image
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Container(
@@ -104,7 +99,9 @@ class _VideocallState extends State<Videocall> {
                     height: 40,
                     width: 100,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
                       color: Color.fromARGB(255, 36, 190, 41),
                     ),
                     child: Row(
@@ -183,7 +180,6 @@ class _VideocallState extends State<Videocall> {
   }
 
   void updateFlagToList(ProjectCard obj) async {
-    print('${obj.projectId} ***************');
     ProjectCard newObj = ProjectCard(
       projectId: obj.projectId,
       developerName: obj.developerName,
@@ -197,7 +193,6 @@ class _VideocallState extends State<Videocall> {
     await updateFlag(newObj);
     projectCardList = await getProjectCards();
     setState(() {});
-    print(projectCardList[0].status);
   }
 
   // ================== CONFIRM Verify ===================
@@ -234,8 +229,10 @@ class _VideocallState extends State<Videocall> {
                 child: Center(
                   child: Text(
                     'Cancel',
-                    style:
-                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -260,8 +257,10 @@ class _VideocallState extends State<Videocall> {
                 child: Center(
                   child: Text(
                     'Verify',
-                    style:
-                        GoogleFonts.poppins(fontSize: 15, color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),

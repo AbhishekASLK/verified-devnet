@@ -234,15 +234,15 @@ class _DevSignUpState extends State<DevSignUp> {
                                 controller: _passwordController,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
-                                  errorStyle: TextStyle(
+                                  errorStyle: const TextStyle(
                                     color: Colors.white,
                                   ),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.white,
                                     ),
                                   ),
-                                  prefixIcon: Icon(
+                                  prefixIcon: const Icon(
                                     Icons.key,
                                     color: Color.fromRGBO(164, 164, 164, 1),
                                   ),
@@ -260,9 +260,9 @@ class _DevSignUpState extends State<DevSignUp> {
                                     ),
                                   ),
                                   hintText: "Password",
-                                  hintStyle: TextStyle(
+                                  hintStyle: const TextStyle(
                                       color: Color.fromRGBO(164, 164, 164, 1)),
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10),
                                     ),
@@ -292,8 +292,9 @@ class _DevSignUpState extends State<DevSignUp> {
                                   child: const Text(
                                     "Sign In",
                                     style: TextStyle(
-                                        color: Color.fromRGBO(164, 164, 164, 1),
-                                        fontWeight: FontWeight.w800),
+                                      color: Color.fromRGBO(164, 164, 164, 1),
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
                               ],

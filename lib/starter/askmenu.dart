@@ -207,8 +207,12 @@ class _AskMenuState extends State<AskMenu> {
                   width: 350,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Color.fromRGBO(171, 147, 201, 1), width: 3),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      color: const Color.fromRGBO(171, 147, 201, 1),
+                      width: 3,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
                     gradient: const LinearGradient(
                       colors: [
                         Color.fromRGBO(55, 40, 74, 1),

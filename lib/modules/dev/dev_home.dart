@@ -200,7 +200,6 @@ class _DevHomeState extends State<DevHome> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                // edit logic
                                 myBottomSheet(true, projectCardList[index]);
                               },
                               child: Container(
@@ -274,9 +273,11 @@ class _DevHomeState extends State<DevHome> {
                                       ),
                                       children: <TextSpan>[
                                         const TextSpan(
-                                            text: 'Time required: ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                          text: 'Time required: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                         TextSpan(
                                           text: projectCardList[index]
                                               .timeRequired,
@@ -299,9 +300,11 @@ class _DevHomeState extends State<DevHome> {
                                       ),
                                       children: <TextSpan>[
                                         const TextSpan(
-                                            text: 'Github: ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                          text: 'Github: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                         TextSpan(
                                           text: projectCardList[index].gitLink,
                                           style: GoogleFonts.poppins(
@@ -322,9 +325,11 @@ class _DevHomeState extends State<DevHome> {
                                       ),
                                       children: <TextSpan>[
                                         const TextSpan(
-                                            text: 'TechStack: ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                          text: 'TechStack: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                         TextSpan(
                                           text:
                                               projectCardList[index].techStack,
@@ -345,9 +350,11 @@ class _DevHomeState extends State<DevHome> {
                                       ),
                                       children: <TextSpan>[
                                         const TextSpan(
-                                            text: 'Type: ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                          text: 'Type: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                         TextSpan(
                                           text: projectCardList[index].type,
                                           style: GoogleFonts.poppins(
@@ -361,7 +368,6 @@ class _DevHomeState extends State<DevHome> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-
                                   (projectCardList[index].status == 'Verified')
                                       ? Container(
                                           width: 105,
@@ -558,7 +564,6 @@ class _DevHomeState extends State<DevHome> {
                   ),
                 ),
                 height: 30,
-                // width: 70,
                 child: Center(
                   child: Text(
                     'Log-Out',
