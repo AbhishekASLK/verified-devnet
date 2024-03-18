@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verified_devnet/modules/admin/admin_login.dart';
-import 'package:verified_devnet/modules/company/clogin.dart';
+import 'package:verified_devnet/modules/company/com_signin.dart';
 import 'package:verified_devnet/modules/dev/dev_signin.dart';
 import 'package:google_fonts/google_fonts.dart';
 

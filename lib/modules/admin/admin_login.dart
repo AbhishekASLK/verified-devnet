@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
-import 'package:verified_devnet/modules/admin/home_admin.dart';
+import 'package:verified_devnet/modules/admin/admin_home.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -170,17 +170,19 @@ class _AdminLoginState extends State<AdminLogin> {
                                       }
                                     },
                                     controller: _passwordController,
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
                                     decoration: InputDecoration(
-                                      errorStyle: TextStyle(
+                                      errorStyle: const TextStyle(
                                         color: Colors.white,
                                       ),
-                                      errorBorder: OutlineInputBorder(
+                                      errorBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.white,
                                         ),
                                       ),
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.key,
                                         color: Color.fromRGBO(164, 164, 164, 1),
                                       ),
@@ -200,10 +202,10 @@ class _AdminLoginState extends State<AdminLogin> {
                                         ),
                                       ),
                                       hintText: "Password",
-                                      hintStyle: TextStyle(
-                                          color:
-                                              Color.fromRGBO(164, 164, 164, 1)),
-                                      border: OutlineInputBorder(
+                                      hintStyle: const TextStyle(
+                                        color: Color.fromRGBO(164, 164, 164, 1),
+                                      ),
+                                      border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(10),
                                         ),
